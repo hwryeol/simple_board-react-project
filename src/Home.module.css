@@ -1,0 +1,128 @@
+.boards{
+    position: absolute;
+    top:140px;
+    left:350px;
+    right:350px;
+    font-size: 14px;
+}
+.header{
+    display:flex;
+    position: absolute;
+    justify-content:space-between;
+    background-color: #4c87ee;
+    left:350px;
+    right:350px;
+    height:70px;
+}
+table{
+    border-top: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    border-collapse: collapse;
+}
+th{
+    position: relative;
+    background-color: #F9F9F9;
+}
+th::after{
+    content: "";
+    position: absolute;
+    display:block;
+    color:#cecece;
+    left:0px;
+    top:10px;
+    height:14px;
+    border-right: 1px solid;
+}
+.no::after{
+    content:"";
+    display:none;
+}
+tr{
+    border-top: 1px solid #e4e4e4;
+    border-bottom: 1px solid #e4e4e4;
+}
+.link{
+    text-decoration: none;
+}
+.no{
+    width:80px;
+    padding: 8px 14px;
+    text-align: center;
+}
+.title{
+    width:760px;
+    padding: 8px 14px;
+    font-weight:400;
+    text-align: left;
+    
+}
+.title:nth-child(1):hover{
+    text-decoration:underline solid rgb(0, 79, 168);
+}
+.writer{
+    width:120px;
+    padding: 8px 14px;
+    text-align: center;
+}
+.regdate{
+    width:120px;
+    padding: 8px 14px;
+    text-align: center;
+}
+.viewcnt{
+    width:120px;
+    padding: 8px 14px;
+    text-align: center;
+}
+
+.container{
+    position:relative;
+    top:20px;
+    left:400px;
+    right:400px;
+    width:fit-content;
+    display: flex;
+    flex-direction: row;
+}
+.container>div{
+    width:40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+}
+.container>*:hover{
+    background-color: #e4e4e4;
+    border-radius: 14px;
+    cursor:pointer;
+}
+.left_icon{
+    width:40px;
+    height:40px;
+}
+.right_icon{
+    width:40px;
+    height:40px;
+}
+.selectPage{
+    background-color: #e4e4e4;
+    border-radius: 14px;
+}
+.loading{
+    position: absolute;
+    background-color: black;
+    opacity: 30%;
+    z-index: 100;
+    width:100%;
+    height:100%;
+}
+.loading>*{
+    position: absolute;
+    top:calc(50% - 29px);
+    left:calc(50% - 29px);
+}
+.profile{
+    margin: 40px;
+}
+.message{
+    display: inline;
+}
