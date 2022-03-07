@@ -1,5 +1,59 @@
 .detail{
     position:absolute;
+    top: 100px;
     left:350px;
     right:350px;
+}
+.title{
+    font-size: 16px;
+    font-weight: 700;
+}
+.userData{
+    font-size: 16px;
+    font-weight: 500;
+}
+.userData:after{
+    content: "";
+    position: absolute;
+    display:block;
+    color:#333;
+    top:30px;
+    left:50px;
+    height:14px;
+    border-right: 1px solid;
+}
+
+.contents{
+    resize: none;
+    position: relative;
+    top:16px;
+    width:100%;
+    left:0px;
+    height: 600px;
+    font-size: 13px;
+    cursor:default;
+    border: none;
+}
+.contents:focus{
+    outline: none;
+}
+.ddd{
+    outline:solid;
+    cursor:text;
+}
+.ddd:focus{
+    outline:solid;
+}
+.delete{
+    position: absolute;
+    display: block;
+    top:680px;
+    right: 0px;
+}
+.comments{
+    position: relative;
+    height:50px;
+    margin-top:40px;
+    background-color: skyblue;
+    top:20px;
 }

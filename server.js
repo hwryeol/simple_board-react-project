@@ -103,6 +103,20 @@ app.get('/forums/pages/:page',(req,res)=>{
     });
 })
 
+app.get('/comments/:no',(req,res)=>{
+    const queryString = `SELECT
+    contents,
+    user_uuid,
+    create_at,
+    seq,lvl
+    from comments where post_no=?; 
+    `;
+    db.query(queryString,req.params.no,(err,result)=>{
+        if(err) throw err;
+        res.send(JSON.stringify(result));
+    })
+})
+
 app.get('/forums/:no',(req,res)=>{
     const queryString = `
     select
@@ -165,3 +179,4 @@ app.post('/forums',async (req,res)=>{
         });
         }
     })
+

@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import {Link} from "react-router-dom";
 import styles from "./Home.module.css";
-import Cookies from 'universal-cookie';
 import {VscChevronLeft,VscChevronRight } from "react-icons/vsc";
 import LoadingIcons from 'react-loading-icons'
 
@@ -16,8 +15,6 @@ function Home() {
   const [isLoading,setIsLoading] = useState(true);
 
   const max_page = Math.ceil(forumsCount/10);
-  
-
   
 
   function getForumList(){
@@ -87,39 +84,39 @@ function Home() {
       <>
       {isLoading&&<div className={styles.loading}><LoadingIcons.SpinningCircles/></div>}
       <div className={styles.header}>
-          <h2>게시판</h2>
+          <h2 className={styles.header_title}>게시판</h2>
             <div>
             {isLogined?
-              <><Link className={`${styles.link} ${styles.profile}`} to="/profile">닉네임 변경</Link><h2 className={styles.message}>{userData.nickname}님 환영합니다.</h2></> : <Link to="/login">로그인</Link>
+              <><Link className={`${styles.header_link}`} to="/profile">닉네임 변경</Link><h2 className={styles.header_message}>{userData.nickname}님 환영합니다.</h2></> : <Link className={styles.header_link} to="/login">로그인</Link>
             }
             </div>
           </div>
       <div className={styles.boards}>
-        <div>{`총 게시물 ${forumsCount}건 현재페이지 ${currentPage}/${max_page}`}</div>
-        <table>
-            <thead className="forumsList">
-              <tr>
-                <th className={styles.no}>번호</th>
-                <th className={styles.title}>제목</th>
-                <th className={styles.writer}>작성자</th>
-                <th className={styles.regdate}>날짜</th>
-                <th className={styles.viewcnt}>조회수</th>
+        <div className={styles.boards_title}>{`총 게시물 ${forumsCount}건 현재페이지 ${currentPage}/${max_page}`}</div>
+        <table className={styles.boards_content_List}>
+            <thead className={styles.boards_content_List_header}>
+              <tr className={styles.boards_content_List_header_tr}>
+                <th className={styles.boards_content_List_header_no}>번호</th>
+                <th className={styles.boards_content_List_header_title}>제목</th>
+                <th className={styles.boards_content_List_header_writer}>작성자</th>
+                <th className={styles.boards_content_List_header_createAt}>날짜</th>
+                <th className={styles.boards_content_List_header.viewCount}>조회수</th>
               </tr>
-            </thead>
-            <tbody className="forumsList">
+            </thead> 
+            <tbody className={styles.boards_content_List_body}>
             {
             forumList.map(data=>{
               return (
-              <tr key={`forum_${data['no']}`}>
-                  <td className={styles.no}>{data['no']}</td>
-                    <td className={styles.title}>
-                    <Link className={styles.link} to={`/forums/${data['no']}`}>
-                      {data['title']}
-                    </Link>
-                    </td>
-                  <td className={styles.writer}>{data['nickname']}</td>
-                  <td className={styles.regdate}>{data['create_at'].slice(0,10)}</td>
-                  <td className={styles.viewcnt}>{data['view_count']}</td>     
+              <tr className={styles.boards_content_List_body_tr} key={`forum_${data['no']}`}>
+                  <td className={styles.boards_content_List_body_tr_no}>{data['no']}</td>
+                  <td className={styles.boards_content_List_body_tr_title}>
+                  <Link className={styles.boards_content_List_body_tr_title_link} to={`/forums/${data['no']}`}>
+                    {data['title']}
+                  </Link>
+                  </td>
+                  <td className={styles.boards_content_List_body_tr_writer}>{data['nickname']}</td>
+                  <td className={styles.boards_content_List_body_tr_createAt}>{data['create_at'].slice(0,10)}</td>
+                  <td className={styles.boards_content_List_body_tr_viewCount}>{data['view_count']}</td>     
               </tr>
               )
             })}

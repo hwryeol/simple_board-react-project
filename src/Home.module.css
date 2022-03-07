@@ -14,63 +14,104 @@
     right:350px;
     height:70px;
 }
-table{
+.boards_content_List{
     border-top: 1px solid #CCCCCC;
     border-bottom: 1px solid #CCCCCC;
     border-collapse: collapse;
 }
-th{
+.boards_content_List_header{
     position: relative;
     background-color: #F9F9F9;
 }
-th::after{
+
+.boards_contents_List_body_no{
+
+}
+.boards_contents_List_body_title{
+    
+}
+.boards_contents_List_body_writer{
+    
+}
+.boards_contents_List_body_createAt{
+    
+}
+.boards_content_List_body.viewCount{
+
+}
+
+.boards_content_List_header_tr > *{
+    position: relative;
+}
+
+.boards_content_List_header_tr > *::after{
     content: "";
     position: absolute;
     display:block;
     color:#cecece;
-    left:0px;
+    left:100%;
     top:10px;
     height:14px;
     border-right: 1px solid;
 }
-.no::after{
-    content:"";
-    display:none;
-}
-tr{
+
+.boards_content_List>*{
     border-top: 1px solid #e4e4e4;
     border-bottom: 1px solid #e4e4e4;
 }
-.link{
+.boards_contents_List_body_tr_title_link{
     text-decoration: none;
 }
-.no{
+.boards_content_List_header_no{
     width:80px;
     padding: 8px 14px;
     text-align: center;
 }
-.title{
+.boards_content_List_header_title{
     width:760px;
     padding: 8px 14px;
     font-weight:400;
     text-align: left;
-    
 }
-.title:nth-child(1):hover{
+.boards_content_List_header_title:nth-child(1):hover{
     text-decoration:underline solid rgb(0, 79, 168);
 }
-.writer{
+.boards_content_List_header_writer{
     width:120px;
     padding: 8px 14px;
     text-align: center;
 }
-.regdate{
+.boards_content_List_header_createAt{
     width:120px;
     padding: 8px 14px;
     text-align: center;
 }
-.viewcnt{
+.boards_content_List_body_viewCount{
     width:120px;
+    padding: 8px 14px;
+    text-align: center;
+}
+
+.boards_content_List_body_tr_no{
+    width:80px;
+    padding: 8px 14px;
+    text-align: center;  
+}
+.boards_content_List_body_tr_title_link{
+    text-decoration: none;
+}
+.boards_content_List_body_tr_writer{
+    width:100px;
+    padding: 8px 14px;
+    text-align: center;
+}
+.boards_content_List_body_tr_createAt{
+    width:80px;
+    padding: 8px 14px;
+    text-align: center;
+}
+.boards_content_List_body_tr_viewCount{
+    width:60px;
     padding: 8px 14px;
     text-align: center;
 }
@@ -120,9 +161,6 @@ tr{
     top:calc(50% - 29px);
     left:calc(50% - 29px);
 }
-.profile{
-    margin: 40px;
-}
-.message{
+.header_message{
     display: inline;
 }
