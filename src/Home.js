@@ -84,10 +84,10 @@ function Home() {
       <>
       {isLoading&&<div className={styles.loading}><LoadingIcons.SpinningCircles/></div>}
       <div className={styles.header}>
-          <h2 className={styles.header_title}>게시판</h2>
+          <h1 className={styles.header_title}>게시판</h1>
             <div>
             {isLogined?
-              <><Link className={`${styles.header_link}`} to="/profile">닉네임 변경</Link><h2 className={styles.header_message}>{userData.nickname}님 환영합니다.</h2></> : <Link className={styles.header_link} to="/login">로그인</Link>
+              <><Link className={`${styles.header_link} ${styles.profile}`} to="/profile">닉네임 변경</Link><h2 className={styles.message}>{userData.nickname}님 환영합니다.</h2></> : <Link className={styles.nicu} to="/login">로그인</Link>
             }
             </div>
           </div>

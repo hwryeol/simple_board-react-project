@@ -12,7 +12,7 @@
     background-color: #4c87ee;
     left:350px;
     right:350px;
-    height:70px;
+    height:120px;
 }
 .boards_content_List{
     border-top: 1px solid #CCCCCC;
@@ -22,22 +22,6 @@
 .boards_content_List_header{
     position: relative;
     background-color: #F9F9F9;
-}
-
-.boards_contents_List_body_no{
-
-}
-.boards_contents_List_body_title{
-    
-}
-.boards_contents_List_body_writer{
-    
-}
-.boards_contents_List_body_createAt{
-    
-}
-.boards_content_List_body.viewCount{
-
 }
 
 .boards_content_List_header_tr > *{
@@ -53,6 +37,14 @@
     top:10px;
     height:14px;
     border-right: 1px solid;
+}
+
+.header_title{
+    position: relative;
+    top:30%;
+    left:20px;
+    font-size:24px;
+    margin:0px;
 }
 
 .boards_content_List>*{
@@ -119,8 +111,7 @@
 .container{
     position:relative;
     top:20px;
-    left:400px;
-    right:400px;
+    left:calc(50% - 220px);
     width:fit-content;
     display: flex;
     flex-direction: row;

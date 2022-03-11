@@ -8,6 +8,7 @@ const port=3001;
 const uuid = require('uuid')
 const session = require('express-session');
 const e = require('express');
+const { query } = require('express');
 const MySQLStore = require('express-mysql-session')(session);
 
 const options = {
@@ -103,20 +104,6 @@ app.get('/forums/pages/:page',(req,res)=>{
     });
 })
 
-app.get('/comments/:no',(req,res)=>{
-    const queryString = `SELECT
-    contents,
-    user_uuid,
-    create_at,
-    seq,lvl
-    from comments where post_no=?; 
-    `;
-    db.query(queryString,req.params.no,(err,result)=>{
-        if(err) throw err;
-        res.send(JSON.stringify(result));
-    })
-})
-
 app.get('/forums/:no',(req,res)=>{
     const queryString = `
     select
@@ -145,6 +132,50 @@ app.delete('/forums/:no',(req,res)=>{
         })
     }
 })
+
+app.get('/comments/:no',(req,res)=>{
+    const queryString = `SELECT
+    comments.contents as contents,
+    users.nickname as nickname,
+    comments.create_at as create_at,
+    comments.seq as seq,
+    comments.lvl as lvl
+    from comments, users where post_no=? and users.uuid=comments.user_uuid ORDER BY seq ASC,comments.id ASC, lvl ASC; 
+    `;
+    db.query(queryString,req.params.no,(err,result)=>{
+        if(err) throw err;
+        res.send(JSON.stringify(result));
+    })
+})
+
+app.post('/comments/:no',(req,res)=>{
+    if(!req.session.isLogined)res.status(401).end();
+    else{
+    const post = req.body;
+    console.log(post);
+    const queryString = `
+    INSERT INTO comments(
+        post_no,
+        contents,
+        user_uuid,
+        seq,lvl
+    )
+    VALUES(?,?,?,?,?)`;
+    const queryValues = [
+        req.params.no,
+        post.contents,
+        req.session.uuid,
+        post.seq,
+        post.lvl
+    ]
+
+    db.query(queryString,queryValues,(err,result)=>{
+        if(err) throw err;
+        res.status(200).end();
+    })
+    }
+})
+
 
 
 

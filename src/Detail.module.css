@@ -9,20 +9,29 @@
     font-weight: 700;
 }
 .userData{
+    position: relative;
     font-size: 16px;
     font-weight: 500;
 }
-.userData:after{
+.userData_nickname{
+    position:relative;
+    display:inline;
+}
+.userData_nickname::after{
     content: "";
     position: absolute;
     display:block;
     color:#333;
-    top:30px;
-    left:50px;
+    top:5px;
+    left:100%;
+    margin:0px 10px ;
     height:14px;
     border-right: 1px solid;
 }
-
+.userData_createAt{
+    position:relative;
+    display:inline;
+}
 .contents{
     resize: none;
     position: relative;
@@ -37,6 +46,27 @@
 .contents:focus{
     outline: none;
 }
+.comment_create{
+    background-color: #ddd;
+}
+.comment_create_input{
+    position: relative;
+    top:50px;
+    margin-bottom: 40px;
+    resize:none;
+    width:80%;
+    height:200px
+}
+.comment_create_button{
+    position: absolute;
+    background-color: skyblue;
+    border: 0px;
+    top:55%;
+    height: 31px;
+    width: 100px;
+    left:85%;
+    cursor:pointer;
+}
 .ddd{
     outline:solid;
     cursor:text;
@@ -44,16 +74,44 @@
 .ddd:focus{
     outline:solid;
 }
-.delete{
+.forum_delete{
     position: absolute;
     display: block;
     top:680px;
     right: 0px;
 }
+.forum_update{
+    position: absolute;
+    display: block;
+    top:680px;
+    left: 0px;
+}
 .comments{
     position: relative;
     height:50px;
-    margin-top:40px;
+    margin-top:20px;
     background-color: skyblue;
     top:20px;
+}
+.comment_contents{
+    
+}
+.reply{
+    position: relative;
+    height:50px;
+    margin-top:20px;
+    background-color: #ddd;
+    top:20px;
+}
+.reply_form{
+    display:none;
+}
+.comments_nickname{
+    position:absolute;
+    top:0%;
+    right:0px;
+}
+.comments_create_at{
+    position:absolute;
+    right:0px;
 }
