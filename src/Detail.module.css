@@ -1,8 +1,8 @@
 .detail{
-    position:absolute;
-    top: 100px;
+    position:relative;
+    display:block;
     left:350px;
-    right:350px;
+    width:calc(100% - 700px);
 }
 .title{
     font-size: 16px;
@@ -26,7 +26,6 @@
     left:100%;
     margin:0px 10px ;
     height:14px;
-    border-right: 1px solid;
 }
 .userData_createAt{
     position:relative;
@@ -38,33 +37,34 @@
     top:16px;
     width:100%;
     left:0px;
-    height: 600px;
     font-size: 13px;
+    margin-bottom: 100px;
     cursor:default;
     border: none;
 }
 .contents:focus{
     outline: none;
 }
-.comment_create{
+.comments_create{
+    position:relative;
+    display:flex;
     background-color: #ddd;
+    top:0;
+    width:500px;
+    margin-bottom: 20px;
 }
 .comment_create_input{
     position: relative;
-    top:50px;
-    margin-bottom: 40px;
+    top:0px;
     resize:none;
-    width:80%;
-    height:200px
+    width:800px;
 }
 .comment_create_button{
-    position: absolute;
+    position:relative;
     background-color: skyblue;
     border: 0px;
-    top:55%;
-    height: 31px;
-    width: 100px;
-    left:85%;
+    height: 60px;
+    width:180px;
     cursor:pointer;
 }
 .ddd{
@@ -88,30 +88,44 @@
 }
 .comments{
     position: relative;
-    height:50px;
-    margin-top:20px;
-    background-color: skyblue;
-    top:20px;
+    display: inline-block;
+    width:1160px;
+    background-color: #ffffff;
+    font-size:13px;
+    padding:9px 6px 7px;
+    border-collapse : collapse;
+    margin-top:-1px;
+    border:1px solid;
 }
-.comment_contents{
-    
+.comments_contents{
+    position:relative;
+    width:820px;
+    left:100px;
 }
 .reply{
     position: relative;
-    height:50px;
-    margin-top:20px;
+    width:1160px;
+    padding:9px 6px 7px;
+    font-size:13px;
     background-color: #ddd;
-    top:20px;
+    margin-top:-1px;
+    border:1px solid;
 }
-.reply_form{
+.hidden{
     display:none;
 }
-.comments_nickname{
+.reply_form{
     position:absolute;
-    top:0%;
-    right:0px;
+    z-index:99;
+}
+.comments_nickname{
+    position:relative;
+    width:100px;
+    text-align: left;
 }
 .comments_create_at{
-    position:absolute;
-    right:0px;
+    position: relative;
+    display:block;
+    left:140px;
+    text-align: right;
 }

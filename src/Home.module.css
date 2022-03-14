@@ -142,6 +142,7 @@
 .loading{
     position: absolute;
     background-color: black;
+    top:0;
     opacity: 30%;
     z-index: 100;
     width:100%;
@@ -149,9 +150,12 @@
 }
 .loading>*{
     position: absolute;
-    top:calc(50% - 29px);
+    top:calc(40% - 29px);
     left:calc(50% - 29px);
 }
 .header_message{
     display: inline;
+}
+.boards_content_List_header_viewCount::after{
+    display: none;
 }

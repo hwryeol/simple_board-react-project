@@ -32,9 +32,9 @@ function Signup() {
     return (
       <div>
           <form action="/signup" method="post">
-            <input name="id" onChange={onChange} type="text" />
-            <input name="writer" onChange={onChange} type="text" />
-            <input name="password" onChange={onChange} type="text" />
+            <input name="id" placeholder="id" onChange={onChange} type="text" />
+            <input name="nickname" placeholder="nickname" onChange={onChange} type="text" />
+            <input name="password" placeholder="password" onChange={onChange} type="password" />
             <input type="submit" onClick={clickSignUpClick} value="SignUp" />
           </form>
       </div>

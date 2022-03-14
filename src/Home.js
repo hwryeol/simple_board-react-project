@@ -83,14 +83,6 @@ function Home() {
     return (
       <>
       {isLoading&&<div className={styles.loading}><LoadingIcons.SpinningCircles/></div>}
-      <div className={styles.header}>
-          <h1 className={styles.header_title}>게시판</h1>
-            <div>
-            {isLogined?
-              <><Link className={`${styles.header_link} ${styles.profile}`} to="/profile">닉네임 변경</Link><h2 className={styles.message}>{userData.nickname}님 환영합니다.</h2></> : <Link className={styles.nicu} to="/login">로그인</Link>
-            }
-            </div>
-          </div>
       <div className={styles.boards}>
         <div className={styles.boards_title}>{`총 게시물 ${forumsCount}건 현재페이지 ${currentPage}/${max_page}`}</div>
         <table className={styles.boards_content_List}>
@@ -100,7 +92,7 @@ function Home() {
                 <th className={styles.boards_content_List_header_title}>제목</th>
                 <th className={styles.boards_content_List_header_writer}>작성자</th>
                 <th className={styles.boards_content_List_header_createAt}>날짜</th>
-                <th className={styles.boards_content_List_header.viewCount}>조회수</th>
+                <th className={styles.boards_content_List_header_viewCount}>조회수</th>
               </tr>
             </thead> 
             <tbody className={styles.boards_content_List_body}>

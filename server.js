@@ -63,7 +63,7 @@ app.post('/signup',async (req,res)=>{
     db.query('select id from users where id=?',id,(err,result)=>{
         if(err) throw err;
         if(result[0]===undefined){
-            db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,?,?)'
+            db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,sha1(?),?)'
             ,[id,nickname,password,uuid.v1()],(err,result)=> {if(err) throw err})
         }else{
             res.status(401).end();
@@ -83,6 +83,9 @@ app.post('/login',(req,res)=>{
             req.session.isLogined = true;
             req.session.save();
             res.status(200).end();
+        }
+        else{
+            res.status(401).end();
         }
     })
 });
@@ -152,7 +155,6 @@ app.post('/comments/:no',(req,res)=>{
     if(!req.session.isLogined)res.status(401).end();
     else{
     const post = req.body;
-    console.log(post);
     const queryString = `
     INSERT INTO comments(
         post_no,
