@@ -117,7 +117,7 @@ function Home() {
           <div className={styles.container}>
             {currentPageList>1?<VscChevronLeft onClick={downPageList} className={styles.left_icon}/>:null}
             {pagenation()}
-            {currentPage>max_page || max_page>10 ?<VscChevronRight onClick={upPageList}  className={styles.right_icon}/>:null}
+            {max_page!=0&&(currentPage>max_page || max_page>10) ?<VscChevronRight onClick={upPageList}  className={styles.right_icon}/>:null}
           </div>
       </div>
       </>

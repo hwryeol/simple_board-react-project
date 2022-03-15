@@ -1,18 +1,18 @@
 import styles from "./Comments.module.css";
 import {Link} from "react-router-dom";
 import { useEffect,useRef, useState } from "react";
-function Comments({no,setIsRedirectLogin}){
+
+function Comments({no,setIsRedirectLogin,getMaxSeq,aaa}){
     const [isReplyList,setIsReplyList] = useState([]);
     const [comments,setComments] = useState([]);
-    const [maxseq,setMaxSeq] = useState(0);
-    const comment_input = useRef(null);
     const reply_inputList = useRef([]);
 
     function getComments(){
         fetch(`/comments/${no}`).then(res=>res.json()).then(data=>{
-            data.length>0&&setMaxSeq(data[data.length-1].seq)
-            setComments(data);
-            setIsReplyList(Array.from({length:data.length},()=>false));
+            const commentsData = data;
+            commentsData.length>0&&getMaxSeq(commentsData[ commentsData.length-1].seq)
+            setComments(data);  
+            setIsReplyList(Array.from({length: commentsData.length},()=>false));
             
         })
     }
@@ -27,17 +27,18 @@ function Comments({no,setIsRedirectLogin}){
                 seq:seq,
                 lvl:lvl
             })
-        }).then(res=>{
+        }).then(res=>{     
             if(res.status === 401){
                 alert("로그인이 필요합니다")
                 setIsRedirectLogin(true);
             }
+            getComments()
         })
-        getComments();
+        
     }
     useEffect(()=>{
         getComments();
-    },[])
+    },[aaa])
 
     return <>{comments.map((data,index)=>{
         return <><div key={`commentsList${index}`} className={data.lvl>0?styles.reply:styles.comments} style={{left:`${(data.lvl)*20}px`}}>

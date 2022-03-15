@@ -3,6 +3,7 @@ import { Navigate } from 'react-router-dom'
 import {useParams} from "react-router-dom"
 import styles from "./Detail.module.css"
 import Comments from "./Comments"
+import LoadingIcons from 'react-loading-icons'
 
 
 
@@ -19,6 +20,7 @@ function Detail() {
     const [comments,setComments] = useState([]);
     const [maxseq,setMaxSeq] = useState(0);
     const comment_input = useRef(null);
+    const [aaa,setaaa]=useState(false);
 
     useEffect(()=> {
         fetch(`/forums/${no}`).then(res => res.json()).then(data=> {
@@ -34,6 +36,9 @@ function Detail() {
     function updateForum(){
         setIsUpdate(prev => !prev);
     }
+    function getMaxSeq(seq){
+        setMaxSeq(seq)
+    }
     function createComments(){
         fetch(`/comments/${no}`,{
             method:"POST",
@@ -46,6 +51,7 @@ function Detail() {
                 lvl:0
             })
         }).then(res=>{
+            setaaa(prev=>!prev);
             if(res.status === 401){
                 alert("로그인이 필요합니다")
                 setIsRedirectLogin(true);
@@ -71,7 +77,7 @@ function Detail() {
                     createComments()
                 }} className={styles.comment_create_button}>등록</button>
             </div>
-            <Comments no={no} setIsRedirectLogin={setIsRedirectLogin}/>
+            <Comments no={no} setIsRedirectLogin={setIsRedirectLogin} getMaxSeq={getMaxSeq} aaa={aaa} />
             {isRedirectHome&&<Navigate to="/"/>}
             {isRedirectLogin&&<Navigate to="/login"/>}
             </>

@@ -18,7 +18,11 @@ function Login() {
         "Content-Type":"application/json",
       },
       body:JSON.stringify(userData),
-    }).then((response) => console.log(response));
+    }).then((response) =>{
+      if(response.status === 401){
+        alert("아이디 또는 비밀번호가 틀렸습니다.");
+      }
+    });
     setIsRedirect(true);
   }
   function onChangeUserData(event){

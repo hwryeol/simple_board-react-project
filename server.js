@@ -75,7 +75,7 @@ app.post('/signup',async (req,res)=>{
 
 app.post('/login',(req,res)=>{
     const post = req.body;
-    db.query('select * from users where id=? and password=?',
+    db.query('select * from users where id=? and password=sha1(?)',
     [post.id, post.password],(err,result)=>{
         if(err) throw err;
         if(result[0]!==undefined){
@@ -180,7 +180,12 @@ app.post('/comments/:no',(req,res)=>{
 
 
 
-
+app.post('/logout',(req,res)=>{
+    if(!req.session.isLogined)res.status(401).end();
+    else{
+        req.session.destroy(err=>{});
+    }
+})
 app.get('/profile',(req,res)=>{
     if(!req.session.isLogined)res.status(401).end();
     else{
@@ -204,7 +209,7 @@ app.post('/forums',async (req,res)=>{
     else{
         const post = req.body;
         const userData = await getUserData(req.session.uuid);
-        const insertValues = [post.title, post.contents, userData['uuid']];
+        const insertValues = [post.title, post.contents, req.session.uuid];
         
         db.query('INSERT INTO forums(title,contents,user_uuid) values(?,?,?)',insertValues,(err, result)=>{
             if(err) throw err;

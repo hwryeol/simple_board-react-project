@@ -1,0 +1,24 @@
+.createPost{
+    position: relative;
+    left:350px;
+    width:calc(100% - 700px);
+}
+.title{
+    font-size:18px;
+    width:100%;
+    height:30px;
+    border: 0px;
+}
+.title:focus{
+    outline: 0px;
+}
+.contents{
+    position:relative;
+    resize: none;
+    width:100%;
+    height:500px;
+    
+}
+.contents:focus{
+    outline:0px;
+}
