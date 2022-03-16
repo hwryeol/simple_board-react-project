@@ -218,17 +218,16 @@ app.post('/forums',async (req,res)=>{
         }
     })
 
-// app.up('/forums',async (req,res)=>{
-//     if(!req.session.isLogined) res.status(401).end();
-//     else{
-//         const post = req.body;
-//         const userData = await getUserData(req.session.uuid);
-//         const insertValues = [post.contents, req.session.uuid];
+app.patch('/forums/:no',async (req,res)=>{
+    if(!req.session.isLogined) res.status(401).end();
+    else{
+        const post = req.body;
+        const insertValues = [post.contents, req.session.uuid,req.params.no];
         
-//         db.query('UPDATE forums SET contents = ? WHERE user_uuid = ?',insertValues,(err, result)=>{
-//             if(err) throw err;
-//             res.status(200).end();
-//         });
-//         }
-//     })
+        db.query('UPDATE forums SET contents = ? WHERE user_uuid = ? and no=?',insertValues,(err, result)=>{
+            if(err) throw err;
+            res.status(200).end();
+        });
+        }
+    })
 
