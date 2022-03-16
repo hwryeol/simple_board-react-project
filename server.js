@@ -213,8 +213,22 @@ app.post('/forums',async (req,res)=>{
         
         db.query('INSERT INTO forums(title,contents,user_uuid) values(?,?,?)',insertValues,(err, result)=>{
             if(err) throw err;
-            res.status(200).end();
+            res.send(JSON.stringify({insertId:result.insertId}));
         });
         }
     })
+
+// app.up('/forums',async (req,res)=>{
+//     if(!req.session.isLogined) res.status(401).end();
+//     else{
+//         const post = req.body;
+//         const userData = await getUserData(req.session.uuid);
+//         const insertValues = [post.contents, req.session.uuid];
+        
+//         db.query('UPDATE forums SET contents = ? WHERE user_uuid = ?',insertValues,(err, result)=>{
+//             if(err) throw err;
+//             res.status(200).end();
+//         });
+//         }
+//     })
 

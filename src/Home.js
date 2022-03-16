@@ -114,6 +114,7 @@ function Home() {
             })}
           </tbody>
           </table>
+          <Link to="./postcreate">생성</Link>
           <div className={styles.container}>
             {currentPageList>1?<VscChevronLeft onClick={downPageList} className={styles.left_icon}/>:null}
             {pagenation()}

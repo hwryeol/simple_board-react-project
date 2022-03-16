@@ -38,19 +38,17 @@
     width:100%;
     left:0px;
     font-size: 13px;
-    margin-bottom: 100px;
     cursor:default;
     border: none;
 }
 .contents:focus{
     outline: none;
 }
+
 .comments_create{
     position:relative;
     display:flex;
     background-color: #ddd;
-    top:0;
-    width:1160px;
     height:100px;
     padding: 9px 6px 7px;
     margin-bottom: 20px;
@@ -59,7 +57,7 @@
     position: relative;
     top:0px;
     resize:none;
-    width:1000px;
+    width:84%;
 }
 .comment_create_button{
     position:relative;
@@ -70,11 +68,8 @@
     cursor:pointer;
 }
 .ddd{
-    outline:solid;
+    background-color: #ddd;
     cursor:text;
-}
-.ddd:focus{
-    outline:solid;
 }
 .forum_delete{
     position: absolute;
@@ -83,10 +78,10 @@
     right: 0px;
 }
 .forum_update{
-    position: absolute;
+    position: relative;
     display: block;
-    top:680px;
     left: 0px;
+    margin: 20px 0px;
 }
 .comments{
     position: relative;
@@ -103,6 +98,11 @@
     position:relative;
     width:820px;
     left:100px;
+}
+hr{
+    top:10px;
+    position: relative;
+
 }
 .reply{
     position: relative;

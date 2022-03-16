@@ -69,14 +69,16 @@ function Detail() {
             <div className={styles.userData_nickname}>{forumData.nickname}</div>&nbsp;&nbsp;&nbsp;&nbsp; <div className={styles.userData_createAt}>{forumData.forums_create_at.replace(/T|Z/g,' ').slice(0,19)}</div></div>
             <div style={{position:"relative",marginBottom:"10px",top:"10px",backgroundColor:"red",color:"#ddd",borderBottom:"1px solid"}}/>
             <textarea style={{height:"500px"}} className={[styles.contents,isUpdate?styles.ddd:""].join(" ")} readOnly={!isUpdate}>{forumData.contents}</textarea>
-                {/* <button onClick={updateForum} className={styles.forum_update}>수정</button> */}
+            <hr/>
                 {/* <button onClick={deleteForum} className={styles.forum_delete}>제거</button> */}
+                <button onClick={updateForum} className={styles.forum_update}>수정</button>
             <div className={styles.comments_create}>
                 <textarea ref={comment_input} className={styles.comment_create_input}></textarea>
                 <button onClick={()=>{
                     createComments()
                 }} className={styles.comment_create_button}>등록</button>
             </div>
+            
             <Comments no={no} setIsRedirectLogin={setIsRedirectLogin} getMaxSeq={getMaxSeq} aaa={aaa} />
             {isRedirectHome&&<Navigate to="/"/>}
             {isRedirectLogin&&<Navigate to="/login"/>}
