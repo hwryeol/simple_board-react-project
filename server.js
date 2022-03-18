@@ -132,6 +132,11 @@ app.delete('/forums/:no',(req,res)=>{
         const queryString = `DELETE FROM forums WHERE no=? and user_uuid=?`;
         db.query(queryString,[req.params.no,req.session.uuid],(err,result)=>{
             if(err) throw err;
+            if(result.changedRows){
+                res.status(200).end();
+            }else{
+                res.status(403).end();
+            }
         })
     }
 })
@@ -219,14 +224,18 @@ app.post('/forums',async (req,res)=>{
     })
 
 app.patch('/forums/:no',async (req,res)=>{
-    if(!req.session.isLogined) res.status(401).end();
+    if(!req.session.isLogined){res.status(401).end();}
     else{
         const post = req.body;
-        const insertValues = [post.contents, req.session.uuid,req.params.no];
+        const insertValues = [post.contents,post.title, req.session.uuid,req.params.no];
         
-        db.query('UPDATE forums SET contents = ? WHERE user_uuid = ? and no=?',insertValues,(err, result)=>{
+        db.query('UPDATE forums SET contents = ?,title = ? WHERE user_uuid = ? and no=?',insertValues,(err, result)=>{
             if(err) throw err;
-            res.status(200).end();
+            if(result.changedRows){
+                res.status(200).end();
+            }else{
+                res.status(403).end();
+            }
         });
         }
     })

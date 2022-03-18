@@ -7,6 +7,8 @@
 .title{
     font-size: 16px;
     font-weight: 700;
+    outline: none;
+    border:none;
 }
 .userData{
     position: relative;
@@ -71,17 +73,20 @@
     background-color: #ddd;
     cursor:text;
 }
+.forum_process_menu{
+    display: flex;
+    justify-content: space-between;
+}
 .forum_delete{
-    position: absolute;
+    position: relative;
     display: block;
-    top:680px;
-    right: 0px;
+    margin: 10px 0px;
 }
 .forum_update{
     position: relative;
     display: block;
     left: 0px;
-    margin: 20px 0px;
+    margin: 10px 0px;
 }
 .comments{
     position: relative;

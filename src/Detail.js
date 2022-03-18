@@ -22,17 +22,42 @@ function Detail() {
     const comment_input = useRef(null);
     const contents_input = useRef(null);
     const [aaa,setaaa]=useState(false);
+    const [title,setTitle] = useState("");
+    const [contents,setContents] = useState("");
+
 
     useEffect(()=> {
-        fetch(`/forums/${no}`).then(res => res.json()).then(data=> {
-            setForumData(data[0]);
-            setIsLoading(false);
-        });
+        getForumData();
     }, []);
 
+    function getForumData(){
+        fetch(`/forums/${no}`).then(res => res.json()).then(data=> {
+            setForumData(data[0]);
+            setTitle(data[0].title);
+            setContents(data[0].contents);
+            setIsLoading(false);
+        });
+    }
+
     function deleteForum(){
-        fetch(`/forums/${no}`,{method:"DELETE"}).then((response) => console.log(response));
-        setIsRedirectHome(true);
+        if(window.confirm("게시물을 삭제하겠습니까?")){
+            fetch(`/forums/${no}`,{method:"DELETE"}).then((res) => { 
+                if(res.status === 401){
+                    alert("로그인이 필요합니다")
+                    setIsRedirectLogin(true);
+                }
+                if(res.status === 403){
+                    alert("수정한 권한이 없습니다");
+                    getForumData();
+                }
+                if(res.status === 200){
+                    alert("삭제되었습니다.")
+                    setIsRedirectHome(true);
+                }
+                
+            });
+
+        }
     }
     function updateForum(){
         if(window.confirm("내용을 변경하겠습니까?") ){
@@ -42,9 +67,19 @@ function Detail() {
                     "Content-Type": "application/json"
                   },
                 body:JSON.stringify({
+                    title:title,
                     contents:contents_input.current.value
                 })    
-            }).then((response) => console.log(response));
+            }).then((res) =>{
+                if(res.status === 401){
+                    alert("로그인이 필요합니다")
+                    setIsRedirectLogin(true);
+                }
+                if(res.status === 403){
+                    alert("수정한 권한이 없습니다");
+                    getForumData();
+                }
+            });
         }
         setIsUpdate(false);
     }
@@ -74,16 +109,21 @@ function Detail() {
     return (
         <div className={styles.detail}>
         {isLoading ? <h1>loading</h1>:<>
-            
-            <div className={styles.title}>{forumData.title}</div>
+            <input className={styles.title} style={isUpdate?{border:"1px solid"}:{}} readOnly={!isUpdate} value={title} onChange={(e)=>{
+                setTitle(e.target.value)
+            }}/>
             <div className={styles.userData}>
             <div className={styles.userData_nickname}>{forumData.nickname}</div>&nbsp;&nbsp;&nbsp;&nbsp; <div className={styles.userData_createAt}>{forumData.forums_create_at.replace(/T|Z/g,' ').slice(0,19)}</div></div>
             <div style={{position:"relative",marginBottom:"10px",top:"10px",backgroundColor:"red",color:"#ddd",borderBottom:"1px solid"}}/>
-            <textarea ref={contents_input} style={{height:"500px"}} className={[styles.contents,isUpdate?styles.ddd:""].join(" ")} readOnly={!isUpdate}>{forumData.contents}</textarea>
+            <textarea ref={contents_input} style={{height:"500px"}} className={[styles.contents,isUpdate?styles.ddd:""].join(" ")} readOnly={!isUpdate} onChange={(e)=>{
+                setContents(e.target.value)
+            }} value={contents}/>
             <hr/>
-                {/* <button onClick={deleteForum} className={styles.forum_delete}>제거</button> */}
+            <div className={styles.forum_process_menu}>
                 <button onClick={()=>setIsUpdate(prev=> !prev)} className={isUpdate?styles.hidden:styles.forum_update}>수정</button>
                 <button onClick={updateForum} className={isUpdate?styles.forum_update:styles.hidden}>적용</button>
+                <button onClick={deleteForum} className={styles.forum_delete}>제거</button>
+            </div>
             <div className={styles.comments_create}>
                 <textarea ref={comment_input} className={styles.comment_create_input}></textarea>
                 <button onClick={()=>{
