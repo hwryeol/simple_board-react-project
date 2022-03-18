@@ -16,6 +16,19 @@ function Comments({no,setIsRedirectLogin,getMaxSeq,aaa}){
             
         })
     }
+
+    function deleteComments(index){
+        fetch(`/comments/${no}`,{
+            method:"DELETE",
+            headers:{
+                "Content-Type": "application/json"
+              },
+            body:JSON.stringify({
+                id:comments[index].id
+            })
+        }).then(res=>console.log(res))
+    }
+
     function createReply(ref,seq,lvl){
         fetch(`/comments/${no}`,{
             method:"POST",
@@ -53,7 +66,11 @@ function Comments({no,setIsRedirectLogin,getMaxSeq,aaa}){
                     setIsReplyList(newReplyList)
                 }}>{data.contents}</div>
                 <div className={styles.comments_create_at}>{data.create_at.replace(/T|Z/g,' ').slice(5,19)}</div>
+                <button className={styles.comments_delete_button} onClick={(event)=>{
+                    deleteComments(index);
+                }}>X</button>
             </div>
+            
         </div>
         <div className={isReplyList[index]?styles.reply_form:[styles.reply_form,styles.hidden].join(" ")}>
         <textarea placeholder="답글을 입력하세요" ref={el=>reply_inputList.current[index] = el} type="text" className={styles.reply_input}></textarea>

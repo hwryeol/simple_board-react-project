@@ -82,3 +82,7 @@
     width:180px;
     cursor:pointer;
 }
+.comments_delete_button{
+    position:relative;
+    display: inline;
+}

@@ -144,6 +144,7 @@ app.delete('/forums/:no',(req,res)=>{
 app.get('/comments/:no',(req,res)=>{
     const queryString = `SELECT
     comments.contents as contents,
+    comments.id as id,
     users.nickname as nickname,
     comments.create_at as create_at,
     comments.seq as seq,
@@ -180,6 +181,22 @@ app.post('/comments/:no',(req,res)=>{
         if(err) throw err;
         res.status(200).end();
     })
+    }
+})
+
+app.delete('/comments/:no',(req,res)=>{
+    if(!req.session.isLogined)res.status(401).end();
+    else{
+        const queryString = `DELETE FROM comments WHERE post_no=? and user_uuid=? and id=?`;
+        db.query(queryString,[req.params.no,req.session.uuid,req.body.id],(err,result)=>{
+            if(err) throw err;
+            console.log(result)
+            if(result.affectedRows){
+                res.status(200).end();
+            }else{
+                res.status(403).end();
+            }
+        })
     }
 })
 
