@@ -2,17 +2,30 @@
     position: relative;
     display:flex;
     justify-content:space-between;
-    background-color: #4c87ee;
     left:350px;
-    margin-bottom: 10px;
+    height:120px;
     width:calc(100% - 700px);
 }
+.header_bar{
+    position: relative;
+    background-color: #3b4890;
+    width:100vw;
+    height:45px;
+    margin-bottom: 18px;
 
+}
+.login_link>*{
+    margin-left: 10px;
+}
+.logout_link>*{
+    margin-left: 10px;
+}
 .header_title{
     position: relative;
+    text-decoration: none;
     top:30%;
     left:20px;
-    height:100px;
-    font-size:24px;
+    height:70px;
+    font-size:32px;
     margin:0px;
 }

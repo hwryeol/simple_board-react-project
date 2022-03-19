@@ -1,6 +1,6 @@
 import {useState} from "react";
 
-function Signup() {
+function Signup({isLogined}) {
     const [userData,setUserData] = useState({
         id:"",
         password:"",

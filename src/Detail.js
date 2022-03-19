@@ -7,13 +7,12 @@ import LoadingIcons from 'react-loading-icons'
 
 
 
-function Detail() {
+function Detail({isLogined, isLoading, setIsLoading}) {
     let {no} = useParams();
     let date;
 
 
     const [forumData,setForumData] = useState([]);
-    const [isLoading,setIsLoading] = useState(true);
     const [isRedirectHome,setIsRedirectHome] = useState(false);
     const [isRedirectLogin,setIsRedirectLogin] = useState(false);
     const [isUpdate,setIsUpdate] = useState(false);
@@ -27,6 +26,7 @@ function Detail() {
 
 
     useEffect(()=> {
+        setIsLoading(true);
         getForumData();
     }, []);
 
@@ -35,8 +35,9 @@ function Detail() {
             setForumData(data[0]);
             setTitle(data[0].title);
             setContents(data[0].contents);
-            setIsLoading(false);
-        });
+            setIsLoading(false)
+            
+        }).then();
     }
 
     function deleteForum(){
@@ -106,14 +107,13 @@ function Detail() {
         })
     }
 
-    return (
-        <div className={styles.detail}>
-        {isLoading ? <h1>loading</h1>:<>
+    return (<>
+    {isLoading?<></>:<div className={styles.detail}>
             <input className={styles.title} style={isUpdate?{border:"1px solid"}:{}} readOnly={!isUpdate} value={title} onChange={(e)=>{
                 setTitle(e.target.value)
             }}/>
             <div className={styles.userData}>
-            <div className={styles.userData_nickname}>{forumData.nickname}</div>&nbsp;&nbsp;&nbsp;&nbsp; <div className={styles.userData_createAt}>{forumData.forums_create_at.replace(/T|Z/g,' ').slice(0,19)}</div></div>
+            <div className={styles.userData_nickname}>{forumData.nickname}</div>&nbsp;&nbsp;&nbsp;&nbsp; <div className={styles.userData_createAt}>{forumData.forums_create_at?.replace(/T|Z/g,' ').slice(0,19)}</div></div>
             <div style={{position:"relative",marginBottom:"10px",top:"10px",backgroundColor:"red",color:"#ddd",borderBottom:"1px solid"}}/>
             <textarea ref={contents_input} style={{height:"500px"}} className={[styles.contents,isUpdate?styles.ddd:""].join(" ")} readOnly={!isUpdate} onChange={(e)=>{
                 setContents(e.target.value)
@@ -134,11 +134,11 @@ function Detail() {
             <Comments no={no} setIsRedirectLogin={setIsRedirectLogin} getMaxSeq={getMaxSeq} aaa={aaa} />
             {isRedirectHome&&<Navigate to="/"/>}
             {isRedirectLogin&&<Navigate to="/login"/>}
-            </>
-        }
-        </div>
+        </div>}
+    
+    </>
     );
-  }
+}
   
 export default Detail;
   

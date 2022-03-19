@@ -2,17 +2,14 @@ import { useEffect, useState } from "react";
 import {Link} from "react-router-dom";
 import styles from "./Home.module.css";
 import {VscChevronLeft,VscChevronRight } from "react-icons/vsc";
-import LoadingIcons from 'react-loading-icons'
 
-function Home() {
+
+function Home({isLogined, isLoding, setIsLoading}) {
   const [forumList,setForumList] = useState([]);
   const [userData,setUserData] = useState([]);
   const [forumsCount,setForumsCount] = useState(0);
   const [currentPage,setCurrentPage] = useState(1);
-  const [isLogined,setIsLogined] = useState(false);
   const [currentPageList,setCurrentPageList] = useState(1);
-
-  const [isLoading,setIsLoading] = useState(true);
 
   const max_page = Math.ceil(forumsCount/10);
   
@@ -35,30 +32,9 @@ function Home() {
       );
       
   }
-  function getUserData(){
-    fetch('/profile',{
-      method:"get",
-      headers:{
-        withCredentials:true
-      }
-    }).then( res => {
-      if(res.status === 401){
-        setIsLogined(false);
-      }else{
-        res.json().then(list => {
-          setIsLogined(true);
-          setUserData(list);
-        })
-      }
-    })
-  }
   useEffect(()=>{
     getForumList();
   },[currentPage]);
-
-  useEffect(()=>{
-    getUserData();
-  },[]);
 
   const pagenation = () => {
     const result = [];
@@ -82,7 +58,7 @@ function Home() {
   
     return (
       <>
-      {isLoading&&<div className={styles.loading}><LoadingIcons.SpinningCircles/></div>}
+     
       <div className={styles.boards}>
         <div className={styles.boards_title}>{`총 게시물 ${forumsCount}건 현재페이지 ${currentPage}/${max_page}`}</div>
         <table className={styles.boards_content_List}>

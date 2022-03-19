@@ -1,8 +1,8 @@
 import styles from "./Header.module.css";
 import {Link} from "react-router-dom";
 import { useEffect, useState } from "react";
-function Header(){
-    const [isLogined,setIsLogined] = useState(false);
+
+function Header({isLogined,setIsLogined, isLoading}){
     const [userData,setUserData] = useState([]);
 
     function getUserData(){
@@ -16,13 +16,14 @@ function Header(){
             setIsLogined(false);
           }else{
             res.json().then(list => {
-              setIsLogined(true);
               setUserData(list);
+              setIsLogined(true); 
             })
           }
         })
       }
       function logOut(){
+      if(window.confirm("로그아웃 하겠습니까?")){
         fetch('/logout',{
             method:"POST",
             headers:{
@@ -34,18 +35,34 @@ function Header(){
             }
           })
       }
+      }
     useEffect(()=>{
         getUserData();
     },[])
 
 
-    return <div className={styles.header}>
-    <Link className={styles.header_title} to="/">게시판</Link>
-      <div>
+    return <><div className={styles.header}>
+      <Link className={styles.header_title} to="/">게시판</Link>
       {isLogined?
-        <><Link className={`${styles.header_link} ${styles.profile}`} to="/profile">닉네임 변경</Link><button onClick={logOut}>로그아웃</button><h2 className={styles.message}>{userData.nickname}님 환영합니다.</h2></> : <Link className={styles.nicu} to="/login">로그인</Link>
+        <>
+        <div  style={{display:"flex",flexDirection:"column"}}>
+          <div className={styles.login_link}>
+            <Link className={`${styles.header_link} ${styles.profile}`} to="/profile">닉네임 변경</Link>
+            <button onClick={logOut}>로그아웃</button>
+          </div>
+        <h2 className={styles.message}>{userData.nickname}님 환영합니다.</h2>
+        </div>
+        </>:<>
+        <div className={styles.logout_link} style={{display:"flex"}}>
+        <Link to="/login">로그인</Link>
+        <Link to="/signup">회원가입</Link>
+        </div>
+        </>
+        
       }
-      </div>
     </div>
+    <div className={styles.header_bar}></div>
+    </>
+    
 }
 export default Header;

@@ -1,8 +1,8 @@
 import { useRef,useState } from "react"
 import { Navigate } from 'react-router-dom'
-import style from "./PostCreate.module.css"
+import styles from "./PostCreate.module.css"
 
-function CreatePost(){
+function CreatePost({isLogined}){
     const titleRef = useRef(null);
     const contentsRef = useRef(null);
 
@@ -29,10 +29,10 @@ function CreatePost(){
             })
         })
     }
-    return <div className={style.createPost}>
-        <input className={style.title} placeholder="제목을 입력하세요" ref={titleRef}></input>
+    return <div className={styles.createPost}>
+        <input className={styles.title} placeholder="제목을 입력하세요" ref={titleRef}></input>
         <hr></hr>
-        <textarea className={style.contents} ref={contentsRef}></textarea>
+        <textarea className={styles.contents} ref={contentsRef}></textarea>
         <button onClick={sendPost}>등록</button>
         {isRedirectPost&&<Navigate to={`/forums/${insertId}`}/>}
     </div>

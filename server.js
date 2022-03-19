@@ -190,7 +190,6 @@ app.delete('/comments/:no',(req,res)=>{
         const queryString = `DELETE FROM comments WHERE post_no=? and user_uuid=? and id=?`;
         db.query(queryString,[req.params.no,req.session.uuid,req.body.id],(err,result)=>{
             if(err) throw err;
-            console.log(result)
             if(result.affectedRows){
                 res.status(200).end();
             }else{

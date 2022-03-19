@@ -18,15 +18,17 @@ function Comments({no,setIsRedirectLogin,getMaxSeq,aaa}){
     }
 
     function deleteComments(index){
-        fetch(`/comments/${no}`,{
-            method:"DELETE",
-            headers:{
-                "Content-Type": "application/json"
-              },
-            body:JSON.stringify({
-                id:comments[index].id
-            })
-        }).then(res=>console.log(res))
+        if(window.confirm("댓글을 삭제하겠습니까?")){
+            fetch(`/comments/${no}`,{
+                method:"DELETE",
+                headers:{
+                    "Content-Type": "application/json"
+                },
+                body:JSON.stringify({
+                    id:comments[index].id
+                })
+            }).then(getComments())
+        }
     }
 
     function createReply(ref,seq,lvl){

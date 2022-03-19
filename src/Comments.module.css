@@ -11,6 +11,7 @@
 }
 .comments_contents{
     position:relative;
+    cursor: pointer;
     width:820px;
     left:100px;
 }
