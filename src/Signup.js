@@ -1,5 +1,6 @@
 import {useState} from "react";
 import styles from "./signup.module.css"
+import sha256 from "sha256";
 
 function Signup({isLogined}) {
     const [userData,setUserData] = useState({
@@ -26,7 +27,11 @@ function Signup({isLogined}) {
             headers:{
                 "Content-Type": "application/json"
               },
-            body:JSON.stringify(userData)
+            body:JSON.stringify({
+                id:userData.id,
+                password:sha256(userData.password),
+                nickname:userData.nickname
+            })
         }).then(res => {
             if(res.status === 200){
                 alert("회원가입이 완료됐습니다.")
@@ -34,7 +39,6 @@ function Signup({isLogined}) {
                 alert("회원가입이 되지 않았습니다.")
             }
         })
-        console.log(userData);
     }
     }
     return (

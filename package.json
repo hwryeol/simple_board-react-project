@@ -13,6 +13,7 @@
     "express": "^4.17.3",
     "express-mysql-session": "^2.1.7",
     "express-session": "^1.17.2",
+    "hashids": "^2.2.10",
     "mysql2": "^2.3.3",
     "react": "^17.0.2",
     "react-cookie": "^4.1.1",
@@ -24,6 +25,7 @@
     "react-router-dom": "^6.2.1",
     "react-scripts": "5.0.0",
     "save": "^2.4.0",
+    "sha256": "^0.2.0",
     "universal-cookie": "^4.0.4",
     "web-vitals": "^2.1.4"
   },

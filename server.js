@@ -63,7 +63,7 @@ app.post('/signup',async (req,res)=>{
     db.query('select id from users where id=?',id,(err,result)=>{
         if(err) throw err;
         if(result[0]===undefined){
-            db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,sha1(?),?)'
+            db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,SHA2(?,256),?)'
             ,[id,nickname,password,uuid.v1()],(err,result)=> {if(err) throw err})
             res.status(200).end();
         }else{
@@ -76,7 +76,7 @@ app.post('/signup',async (req,res)=>{
 
 app.post('/login',(req,res)=>{
     const post = req.body;
-    db.query('select * from users where id=? and password=sha1(?)',
+    db.query('select * from users where id=? and password=SHA2(?,256)',
     [post.id, post.password],(err,result)=>{
         if(err) throw err;
         if(result[0]!==undefined){
