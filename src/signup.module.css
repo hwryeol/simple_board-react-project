@@ -1,0 +1,22 @@
+.signup{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    left:350px;
+    width:calc(100% - 700px);
+}
+.signup > *{
+    margin-top: 20px;
+    height:30px;
+    height:46px;
+    width:100%;
+    margin-top: 8px;
+    border:1px solid #d6d6d6;
+}
+
+.signup_submit{
+    background: #4c87ee;
+    color:white;
+    border:0;
+    font-size: 19px;
+}

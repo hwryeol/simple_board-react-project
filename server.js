@@ -65,6 +65,7 @@ app.post('/signup',async (req,res)=>{
         if(result[0]===undefined){
             db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,sha1(?),?)'
             ,[id,nickname,password,uuid.v1()],(err,result)=> {if(err) throw err})
+            res.status(200).end();
         }else{
             res.status(401).end();
         }
