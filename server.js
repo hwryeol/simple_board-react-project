@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path')
 const mysql = require('mysql2');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
@@ -10,6 +11,10 @@ const session = require('express-session');
 const e = require('express');
 const { query } = require('express');
 const MySQLStore = require('express-mysql-session')(session);
+
+const passport = require('passport')
+,GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
 
 const options = {
     host:'localhost',
@@ -37,6 +42,7 @@ const db = mysql.createConnection(options);
 
 app.use(session(sessionOption));
 app.use(cors(corsOptions));
+app.use('/',express.static(path.join(__dirname,'build')))
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 
@@ -76,6 +82,7 @@ app.post('/signup',async (req,res)=>{
 
 app.post('/login',(req,res)=>{
     const post = req.body;
+    console.log(post);
     db.query('select * from users where id=? and password=SHA2(?,256)',
     [post.id, post.password],(err,result)=>{
         if(err) throw err;
@@ -205,7 +212,10 @@ app.delete('/comments/:no',(req,res)=>{
 app.post('/logout',(req,res)=>{
     if(!req.session.isLogined)res.status(401).end();
     else{
-        req.session.destroy(err=>{});
+        req.session.destroy((err)=>{
+        res.cookie(`connect.sid`,``,{maxAge:0});
+        res.redirect('/');
+    });
     }
 })
 app.get('/profile',(req,res)=>{
@@ -257,3 +267,66 @@ app.patch('/forums/:no',async (req,res)=>{
         }
     })
 
+//google login
+
+const googleCredentials = {
+    "web": {
+        "client_id": "544418941894-p8h46r8rsd8tv4s6op62k5iils3o2q4d.apps.googleusercontent.com",
+        "client_secret": "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",
+        "redirect_uris": [
+            "http://localhost:3001/auth/google/callback"
+        ]
+    }
+}
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
+  });
+passport.deserializeUser(function(user, done) {
+	done(null, user);
+});
+
+passport.use(new GoogleStrategy({
+    clientID: googleCredentials.web.client_id,
+    clientSecret: googleCredentials.web.client_secret,
+    callbackURL: googleCredentials.web.redirect_uris[0]
+    },
+    function(accessToken, refreshToken, profile, done) {
+        db.query(`SELECT id from users where id=?`,[
+            profile.emails[0].value
+        ],(err,result)=>{
+            if(result[0] === undefined){
+                db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,SHA2(?,256),?)',[
+                    profile.emails[0].value,
+                    profile.displayName,
+                    uuid.v1(),
+                    uuid.v1()
+                ],(err,result)=> {if(err) throw err})
+            }
+        })
+        return done(null, profile);
+    }
+    )
+);
+
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['email','profile'] }));
+
+
+//구글 로그인 후 자신의 웹사이트로 돌아오게될 주소 (콜백 url)
+app.get('/auth/google/callback', 
+  passport.authenticate('google', { failureRedirect: '/auth/login' }),
+  
+  function(req, res) {
+    const email = req.session.passport.user.emails[0].value;
+    db.query(`SELECT uuid from users where id=?`,[email],(err,result)=>{
+        req.session.uuid = result[0].uuid;
+        req.session.isLogined = true;
+        req.session.save()
+        res.redirect('/');
+    })
+
+  });

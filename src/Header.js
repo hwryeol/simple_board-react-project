@@ -16,12 +16,14 @@ function Header({isLogined,setIsLogined, isLoading}){
             setIsLogined(false);
           }else{
             res.json().then(list => {
+              console.log(list);
               setUserData(list);
               setIsLogined(true); 
             })
           }
         })
       }
+      
       function logOut(){
       if(window.confirm("로그아웃 하겠습니까?")){
         fetch('/logout',{
@@ -30,9 +32,7 @@ function Header({isLogined,setIsLogined, isLoading}){
               withCredentials:true
             }
           }).then( res => {
-            if(res.status === 401){
-              setIsLogined(false);
-            }
+            setIsLogined(false);
           })
       }
       }
@@ -55,6 +55,7 @@ function Header({isLogined,setIsLogined, isLoading}){
         </>:<>
         <div className={styles.logout_link} style={{display:"flex"}}>
         <Link to="/login">로그인</Link>
+        <a href="/auth/google" onClick={()=>getUserData()}>fafa</a>
         <Link to="/signup">회원가입</Link>
         </div>
         </>
