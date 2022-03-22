@@ -2,43 +2,22 @@ import styles from "./Header.module.css";
 import {Link} from "react-router-dom";
 import { useEffect, useState } from "react";
 
-function Header({isLogined,setIsLogined, isLoading}){
-    const [userData,setUserData] = useState([]);
-
-    function getUserData(){
-        fetch('/profile',{
-          method:"get",
+function Header({isLogined,setIsLogined, isLoading,getUserData,userData,setUserData}){
+    function logOut(){
+    if(window.confirm("로그아웃 하겠습니까?")){
+      fetch('/logout',{
+          method:"POST",
           headers:{
             withCredentials:true
           }
         }).then( res => {
-          if(res.status === 401){
-            setIsLogined(false);
-          }else{
-            res.json().then(list => {
-              console.log(list);
-              setUserData(list);
-              setIsLogined(true); 
-            })
-          }
+          setIsLogined(false);
         })
-      }
-      
-      function logOut(){
-      if(window.confirm("로그아웃 하겠습니까?")){
-        fetch('/logout',{
-            method:"POST",
-            headers:{
-              withCredentials:true
-            }
-          }).then( res => {
-            setIsLogined(false);
-          })
-      }
-      }
-    useEffect(()=>{
-        getUserData();
-    },[])
+    }
+    }
+  useEffect(()=>{
+      getUserData();
+  },[])
 
 
     return <><div className={styles.header}>

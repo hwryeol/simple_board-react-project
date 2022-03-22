@@ -13,19 +13,41 @@ import styles from "./App.module.css";
 function App(){
   const [isLogined,setIsLogined] = useState(false);
   const [isLoading,setIsLoading] = useState(false);
+  const [userData,setUserData] = useState([]);
+
+  function getUserData(){
+    fetch('/profile',{
+      method:"get",
+      headers:{
+        withCredentials:true
+      }
+    }).then( res => {
+      if(res.status === 401){
+        setIsLogined(false);
+      }else{
+        res.json().then(list => {
+          console.log(list);
+          setUserData(list);
+          setIsLogined(true); 
+        })
+      }
+    })
+  }
+
+  const props = {isLogined,setIsLogined,isLoading,setIsLoading,userData,setUserData,getUserData}
 
   return (
     <div className="App">
        {isLoading&&<div className={styles.loading}><LoadingIcons.SpinningCircles/></div>}
       <BrowserRouter>
-      <Header isLogined={isLogined} setIsLogined={setIsLogined}/>
+      <Header {...props}/>
         <Routes>
-          <Route path="/" element={<Home isLogined={isLogined} isLoading={isLoading} setIsLoading={setIsLoading} />}/>
-          <Route path="/login" element={<Login isLogined={isLogined} isLoading={isLoading} setIsLoading={setIsLoading}/>} />
-          <Route path="/forums/:no" element={<Detail isLogined={isLogined} isLoading={isLoading} setIsLoading={setIsLoading}/>}/>
-          <Route path="/profile" element={<Profile isLogined={isLogined} isLoading={isLoading} setIsLoading={setIsLoading}/>} />
-          <Route path="/signup" element={<Signup isLogined={isLogined} isLoading={isLoading} setIsLoading={setIsLoading}/>} />
-          <Route path="/postcreate" element={<PostCreate isLogined={isLogined} isLoading={isLoading} setIsLoading={setIsLoading}/>} />
+          <Route path="/" element={<Home {...props} />}/>
+          <Route path="/login" element={<Login {...props}/>} />
+          <Route path="/forums/:no" element={<Detail {...props}/>}/>
+          <Route path="/profile" element={<Profile {...props}/>} />
+          <Route path="/signup" element={<Signup {...props}/>} />
+          <Route path="/postcreate" element={<PostCreate {...props}/>} />
         </Routes>
       </BrowserRouter>
     </div>

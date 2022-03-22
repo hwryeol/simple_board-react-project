@@ -4,7 +4,7 @@ import styles from "./Login.module.css";
 import sha256 from "sha256";
 
 
-function Login({setIsLogined}) {
+function Login({setIsLogined,getUserData}) {
   const [isRedirect,setIsRedirect] = useState(false);
   const [userData,setUserData] = useState([]);
 
@@ -23,7 +23,10 @@ function Login({setIsLogined}) {
       if(response.status === 401){
         alert("아이디 또는 비밀번호가 틀렸습니다.");
       }
+      else{
+        getUserData();
         setIsLogined(true);
+      }
     });
     setIsRedirect(true);
   }
