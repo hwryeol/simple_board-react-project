@@ -60,6 +60,7 @@ function Detail({isLogined, isLoading, setIsLoading}) {
 
         }
     }
+    
     function updateForum(){
         if(window.confirm("내용을 변경하겠습니까?") ){
             fetch(`/forums/${no}`,{
@@ -115,9 +116,7 @@ function Detail({isLogined, isLoading, setIsLoading}) {
             <div className={styles.userData}>
             <div className={styles.userData_nickname}>{forumData.nickname}</div>&nbsp;&nbsp;&nbsp;&nbsp; <div className={styles.userData_createAt}>{forumData.forums_create_at?.replace(/T|Z/g,' ').slice(0,19)}</div></div>
             <div style={{position:"relative",marginBottom:"10px",top:"10px",backgroundColor:"red",color:"#ddd",borderBottom:"1px solid"}}/>
-            <textarea ref={contents_input} style={{height:"500px"}} className={[styles.contents,isUpdate?styles.ddd:""].join(" ")} readOnly={!isUpdate} onChange={(e)=>{
-                setContents(e.target.value)
-            }} value={contents}/>
+            <div dangerouslySetInnerHTML={{__html:`${contents}`}} />
             <hr/>
             <div className={styles.forum_process_menu}>
                 <button onClick={()=>setIsUpdate(prev=> !prev)} className={isUpdate?styles.hidden:styles.forum_update}>수정</button>
@@ -125,7 +124,7 @@ function Detail({isLogined, isLoading, setIsLoading}) {
                 <button onClick={deleteForum} className={styles.forum_delete}>제거</button>
             </div>
             <div className={styles.comments_create}>
-                <textarea ref={comment_input} className={styles.comment_create_input}></textarea>
+                <div ref={comment_input} className={styles.comment_create_input}></div> 
                 <button onClick={()=>{
                     createComments()
                 }} className={styles.comment_create_button}>등록</button>
