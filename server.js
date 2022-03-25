@@ -11,7 +11,7 @@ const session = require('express-session');
 const e = require('express');
 const { query } = require('express');
 const MySQLStore = require('express-mysql-session')(session);
-
+const proxy = require('express-http-proxy');
 const passport = require('passport')
 ,GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
@@ -45,6 +45,15 @@ app.use(cors(corsOptions));
 app.use('/',express.static(path.join(__dirname,'build')))
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
+app.use('/ckfinder',proxy('http://localhost:3002',{
+    proxyReqPathResolver: function (req) {
+        var parts = req.url.split('?');
+        var queryString = parts[1];
+        var updatedPath = parts[0].replace(/test/, 'tent');
+        return '/ckfinder'+ updatedPath + (queryString ? '?' + queryString : '');
+      }
+}))
+
 
 
 db.connect();
@@ -59,6 +68,7 @@ async function getUserData(uuid){
     })
     return result; 
 }
+
 
 app.listen(port,()=>{
     console.log("server is running");
@@ -206,7 +216,9 @@ app.delete('/comments/:no',(req,res)=>{
         })
     }
 })
-
+app.post('/upload',(req,res)=>{
+    console.log(req.body);
+})
 
 
 app.post('/logout',(req,res)=>{
