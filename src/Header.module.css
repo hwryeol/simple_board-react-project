@@ -1,10 +1,10 @@
 .header{
     position: relative;
     display:flex;
+    left:330px;
     justify-content:space-between;
-    left:350px;
     height:120px;
-    width:calc(100% - 700px);
+    width:calc(100% - 660px)
 }
 .header_bar{
     position: relative;
@@ -14,18 +14,19 @@
     margin-bottom: 18px;
 
 }
-.login_link>*{
-    margin-left: 10px;
+.header_links{
+    display: flex;
 }
-.logout_link>*{
+.col{
+    flex-direction: column;
+}
+.header_links>*{
     margin-left: 10px;
 }
 .header_title{
     position: relative;
     text-decoration: none;
     top:30%;
-    left:20px;
-    height:70px;
     font-size:32px;
     margin:0px;
 }

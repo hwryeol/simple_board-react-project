@@ -7,6 +7,7 @@ const cors = require('cors');
 const app=express();
 const port=3001;
 const uuid = require('uuid')
+const multer = require('multer')
 const session = require('express-session');
 const e = require('express');
 const { query } = require('express');
@@ -15,11 +16,31 @@ const proxy = require('express-http-proxy');
 const passport = require('passport')
 ,GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
+require('dotenv').config();
+
+const fs =require('fs')
+const storage = multer.diskStorage({
+    destination: (req,file,cb)=>{
+        const urlSplit = req.url.split('/');
+        const no = urlSplit[urlSplit.length - 1];
+        console.log(no)
+        const dir = `./upload/${no}`
+        if(!fs.existsSync(dir)){
+            fs.mkdirSync(dir);
+        }
+        cb(null,dir)
+    },
+    filename: (req,file,cb)=>{
+        console.log()
+        cb(null, file.originalname)
+    }
+})
+const upload = multer({dest: `upload/`, storage:storage})
 
 const options = {
     host:'localhost',
     user:'root',
-    password:"z1x2c3v4",
+    password:process.env.SQL_PASSWORD,
     database:'simpleforum',
     multipleStatements:true
 };
@@ -73,6 +94,7 @@ async function getUserData(uuid){
 app.listen(port,()=>{
     console.log("server is running");
 })
+
 
 app.post('/signup',async (req,res)=>{
     const {id,nickname,password} = req.body;
@@ -179,27 +201,32 @@ app.post('/comments/:no',(req,res)=>{
     if(!req.session.isLogined)res.status(401).end();
     else{
     const post = req.body;
-    const queryString = `
-    INSERT INTO comments(
-        post_no,
-        contents,
-        user_uuid,
-        seq,lvl
-    )
-    VALUES(?,?,?,?,?)`;
-    const queryValues = [
-        req.params.no,
-        post.contents,
-        req.session.uuid,
-        post.seq,
-        post.lvl
-    ]
-
-    db.query(queryString,queryValues,(err,result)=>{
-        if(err) throw err;
-        res.status(200).end();
-    })
+    console.log(post.contents)
+    if(post.contents){
+        console.log(post.contents)
+        const queryString = `
+        INSERT INTO comments(
+            post_no,
+            contents,
+            user_uuid,
+            seq,lvl
+        )
+        VALUES(?,?,?,?,?)`;
+        const queryValues = [
+            req.params.no,
+            post.contents,
+            req.session.uuid,
+            post.seq,
+            post.lvl
+        ]
+    
+        db.query(queryString,queryValues,(err,result)=>{
+            if(err) throw err;
+            res.status(200).end();
+        })
+        }
     }
+
 })
 
 app.delete('/comments/:no',(req,res)=>{
@@ -216,9 +243,22 @@ app.delete('/comments/:no',(req,res)=>{
         })
     }
 })
-app.post('/upload',(req,res)=>{
-    console.log(req.body);
+
+app.post('/upload/:no',upload.array('files'),(req,res)=>{
+    res.send('upload');
+    console.log(req.files);
 })
+
+
+app.get('/download/:no/:name',(req,res)=>{
+    const dir = `./upload/${req.params.no}`
+    if(fs.existsSync(dir)){
+    fs.readFile(`${dir}/${req.params.name}`,'utf-8',(err,data)=>{
+        res.write(data);
+        res.end();
+    })
+    }
+    })
 
 
 app.post('/logout',(req,res)=>{
@@ -283,8 +323,8 @@ app.patch('/forums/:no',async (req,res)=>{
 
 const googleCredentials = {
     "web": {
-        "client_id": "544418941894-p8h46r8rsd8tv4s6op62k5iils3o2q4d.apps.googleusercontent.com",
-        "client_secret": "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",
+        "client_id": process.env.CLIENT_ID,
+        "client_secret": process.env.CLIENT_SECRET,
         "redirect_uris": [
             "http://localhost:3001/auth/google/callback"
         ]

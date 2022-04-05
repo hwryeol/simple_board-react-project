@@ -2,6 +2,7 @@ import {Link,Navigate} from "react-router-dom"
 import {useState} from "react"
 import styles from "./Login.module.css";
 import sha256 from "sha256";
+import googleLoginBtn from "./asset/googleLogin.png"
 
 
 function Login({setIsLogined,getUserData}) {
@@ -39,13 +40,15 @@ function Login({setIsLogined,getUserData}) {
 
   return (
     <div>
-      
       <div className={styles.form}>
         로그인
         <input className={styles.id} name="id" type="text" onChange={onChangeUserData}/>
         <input className={styles.password} name="password" type="password" onChange={onChangeUserData}/>
         <input className={styles.submit} type="button" onClick={onClickSubmit} value="로그인" />
         <Link to="/signup">회원가입을 아직 안하셨나요?</Link>
+        <a href="/auth/google" onClick={()=>getUserData()}>
+          <div>구글로그인</div>
+          </a>
       </div>
         
         {isRedirect&&<Navigate to="/"/>}

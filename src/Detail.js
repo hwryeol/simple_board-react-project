@@ -4,6 +4,8 @@ import {useParams} from "react-router-dom"
 import styles from "./Detail.module.css"
 import Comments from "./Comments"
 import LoadingIcons from 'react-loading-icons'
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import Editor from 'ckeditor5/build/ckeditor';
 
 
 
@@ -70,7 +72,8 @@ function Detail({isLogined, isLoading, setIsLoading}) {
                   },
                 body:JSON.stringify({
                     title:title,
-                    contents:contents_input.current.value
+                    // contents:contents_input.current.value
+                    contents:contents
                 })    
             }).then((res) =>{
                 if(res.status === 401){
@@ -95,7 +98,7 @@ function Detail({isLogined, isLoading, setIsLoading}) {
                 "Content-Type": "application/json"
               },
             body:JSON.stringify({
-                contents:comment_input.current.value,
+                contents:comment_input.current.innerText,
                 seq:maxseq+1,
                 lvl:0
             })
@@ -116,7 +119,28 @@ function Detail({isLogined, isLoading, setIsLoading}) {
             <div className={styles.userData}>
             <div className={styles.userData_nickname}>{forumData.nickname}</div>&nbsp;&nbsp;&nbsp;&nbsp; <div className={styles.userData_createAt}>{forumData.forums_create_at?.replace(/T|Z/g,' ').slice(0,19)}</div></div>
             <div style={{position:"relative",marginBottom:"10px",top:"10px",backgroundColor:"red",color:"#ddd",borderBottom:"1px solid"}}/>
-            <div dangerouslySetInnerHTML={{__html:`${contents}`}} />
+            <div className={isUpdate?"":styles.hidden}>
+            <CKEditor
+                    editor={ Editor }
+                    data={contents}
+                    onReady={ editor => {
+                        // You can store the "editor" and use when it is needed.
+                        console.log( 'Editor is ready to use!', editor );
+                    } }
+                    onChange={ ( event, editor ) => {
+                        const data = editor.getData();
+                        setContents(data);
+                        console.log(contents);
+                    } }
+                    onBlur={ ( event, editor ) => {
+                        console.log( 'Blur.', editor );
+                    } }
+                    onFocus={ ( event, editor ) => {
+                        console.log( 'Focus.', editor );
+                    } }
+                />
+            </div>
+            <div className={isUpdate?styles.hidden:""} dangerouslySetInnerHTML={{__html:`${contents}`}} />
             <hr/>
             <div className={styles.forum_process_menu}>
                 <button onClick={()=>setIsUpdate(prev=> !prev)} className={isUpdate?styles.hidden:styles.forum_update}>수정</button>
@@ -124,7 +148,7 @@ function Detail({isLogined, isLoading, setIsLoading}) {
                 <button onClick={deleteForum} className={styles.forum_delete}>제거</button>
             </div>
             <div className={styles.comments_create}>
-                <div ref={comment_input} className={styles.comment_create_input}></div> 
+                <div ref={comment_input} className={styles.comment_create_input} contentEditable></div> 
                 <button onClick={()=>{
                     createComments()
                 }} className={styles.comment_create_button}>등록</button>

@@ -24,18 +24,18 @@ function Header({isLogined,setIsLogined, isLoading,getUserData,userData,setUserD
       <Link className={styles.header_title} to="/">게시판</Link>
       {isLogined?
         <>
-        <div  style={{display:"flex",flexDirection:"column"}}>
-          <div className={styles.login_link}>
+        <div className={[styles.header_links,styles.col].join(" ")}>
+            <div className={styles.login_link}>
             <Link className={`${styles.header_link} ${styles.profile}`} to="/profile">닉네임 변경</Link>
             <button onClick={logOut}>로그아웃</button>
-          </div>
-        <h2 className={styles.message}>{userData.nickname}님 환영합니다.</h2>
+        </div>
+
+        <div className={styles.message}>{userData.nickname}님 환영합니다.</div>
         </div>
         </>:<>
-        <div className={styles.logout_link} style={{display:"flex"}}>
-        <Link to="/login">로그인</Link>
-        <a href="/auth/google" onClick={()=>getUserData()}>fafa</a>
-        <Link to="/signup">회원가입</Link>
+        <div className={styles.header_links}>
+          <Link to="/login">로그인</Link>
+          <Link to="/signup">회원가입</Link>
         </div>
         </>
         
