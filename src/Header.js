@@ -3,6 +3,8 @@ import {Link} from "react-router-dom";
 import { useEffect, useState } from "react";
 
 function Header({isLogined,setIsLogined, isLoading,getUserData,userData,setUserData}){
+    const [isBtnClick,setIsBtnClick] = useState(false);
+
     function logOut(){
     if(window.confirm("로그아웃 하겠습니까?")){
       fetch('/logout',{
@@ -24,13 +26,13 @@ function Header({isLogined,setIsLogined, isLoading,getUserData,userData,setUserD
       <Link className={styles.header_title} to="/">게시판</Link>
       {isLogined?
         <>
-        <div className={[styles.header_links,styles.col].join(" ")}>
+        <button className={styles.userDropMenuBtn} onClick={()=>setIsBtnClick(prev => !prev)}>클릭</button>
+        <div className={[isBtnClick&&styles.hidden,styles.header_links,styles.col].join(" ")}>
             <div className={styles.login_link}>
             <Link className={`${styles.header_link} ${styles.profile}`} to="/profile">닉네임 변경</Link>
             <button onClick={logOut}>로그아웃</button>
         </div>
-
-        <div className={styles.message}>{userData.nickname}님 환영합니다.</div>
+          <div className={styles.message}>{userData.nickname}님 환영합니다.</div>
         </div>
         </>:<>
         <div className={styles.header_links}>
