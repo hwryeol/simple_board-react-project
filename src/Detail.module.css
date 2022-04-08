@@ -4,8 +4,18 @@
     left:350px;
     width:calc(100% - 700px);
 }
+blockquote{
+    overflow: hidden;
+    padding-right: 1.5em;
+    padding-left: 1.5em;
+    margin-left: 0;
+    margin-right: 0;
+    font-style: italic;
+    border-left: 5px solid #ccc;
+}
 .title{
     font-size: 16px;
+    width:100%;
     font-weight: 700;
     outline: none;
     border:none;
@@ -50,24 +60,41 @@
 .comments_create{
     position:relative;
     display:flex;
+    flex-direction: column;
     background-color: #ddd;
     height:100px;
     padding: 9px 6px 7px;
-    margin-bottom: 20px;
+    margin-top:24px;
 }
 .comment_create_input{
     position: relative;
+    white-space: pre-wrap;
     top:0px;
     resize:none;
-    width:84%;
+    height:200%;
 }
 .comment_create_button{
     position:relative;
-    background-color: skyblue;
-    border: 0px;
-    height: 100px;
-    width:180px;
-    cursor:pointer;
+    color: #444444;
+    background: #F3F3F3;
+    border: 1px #DADADA solid;
+    padding: 5px 10px;
+    border-radius: 2px;
+    font-weight: bold;
+    font-size: 9pt;
+    outline: none;
+    right:0%;
+    height:fit-content;
+    width: fit-content;
+}
+.comment_create_button:hover {
+    border: 1px #C6C6C6 solid;
+    box-shadow: 1px 1px 1px #EAEAEA;
+    color: #333333;
+    background: #F7F7F7;
+}
+.comment_create_button:active {
+    box-shadow: inset 1px 1px 1px #DFDFDF;   
 }
 .ddd{
     background-color: #ddd;
@@ -75,18 +102,17 @@
 }
 .forum_process_menu{
     display: flex;
-    justify-content: space-between;
+    margin-bottom: 20px;
 }
 .forum_delete{
     position: relative;
     display: block;
-    margin: 10px 0px;
+    margin-left: 8px;
 }
 .forum_update{
     position: relative;
     display: block;
     left: 0px;
-    margin: 10px 0px;
 }
 .comments{
     position: relative;
@@ -96,7 +122,6 @@
     font-size:13px;
     padding:9px 6px 7px;
     border-collapse : collapse;
-    margin-top:-1px;
     border:1px solid;
 }
 .comments_contents{
@@ -104,11 +129,6 @@
     cursor:pointer;
     width:820px;
     left:100px;
-}
-hr{
-    top:10px;
-    position: relative;
-
 }
 .reply{
     position: relative;

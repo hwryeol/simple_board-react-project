@@ -9,7 +9,7 @@ import Editor from 'ckeditor5/build/ckeditor';
 
 
 
-function Detail({isLogined, isLoading, setIsLoading}) {
+function Detail({isLogined, isLoading, setIsLoading,getUserData}) {
     let {no} = useParams();
     let date;
 
@@ -30,6 +30,7 @@ function Detail({isLogined, isLoading, setIsLoading}) {
     useEffect(()=> {
         setIsLoading(true);
         getForumData();
+        getUserData();
     }, []);
 
     function getForumData(){
@@ -98,7 +99,7 @@ function Detail({isLogined, isLoading, setIsLoading}) {
                 "Content-Type": "application/json"
               },
             body:JSON.stringify({
-                contents:comment_input.current.innerText,
+                contents:comment_input.current.value,
                 seq:maxseq+1,
                 lvl:0
             })
@@ -123,38 +124,25 @@ function Detail({isLogined, isLoading, setIsLoading}) {
             <CKEditor
                     editor={ Editor }
                     data={contents}
-                    onReady={ editor => {
-                        // You can store the "editor" and use when it is needed.
-                        console.log( 'Editor is ready to use!', editor );
-                    } }
                     onChange={ ( event, editor ) => {
                         const data = editor.getData();
                         setContents(data);
-                        console.log(contents);
-                    } }
-                    onBlur={ ( event, editor ) => {
-                        console.log( 'Blur.', editor );
-                    } }
-                    onFocus={ ( event, editor ) => {
-                        console.log( 'Focus.', editor );
-                    } }
+                    }}
                 />
             </div>
             <div className={isUpdate?styles.hidden:""} dangerouslySetInnerHTML={{__html:`${contents}`}} />
-            <hr/>
             <div className={styles.forum_process_menu}>
-                <button onClick={()=>setIsUpdate(prev=> !prev)} className={isUpdate?styles.hidden:styles.forum_update}>수정</button>
-                <button onClick={updateForum} className={isUpdate?styles.forum_update:styles.hidden}>적용</button>
-                <button onClick={deleteForum} className={styles.forum_delete}>제거</button>
+                <button onClick={()=>setIsUpdate(prev=> !prev)} className={[!isLogined&&styles.hidden, isUpdate?styles.hidden:styles.forum_update].join(" ")}>수정</button>
+                <button onClick={updateForum} className={[!isLogined&&styles.hidden,isUpdate?styles.forum_update:styles.hidden].join(" ")}>적용</button>
+                <button onClick={deleteForum} className={[!isLogined&&styles.hidden, styles.forum_delete].join(" ")}>제거</button>
             </div>
-            <div className={styles.comments_create}>
-                <div ref={comment_input} className={styles.comment_create_input} contentEditable></div> 
+            <Comments no={no} setIsRedirectLogin={setIsRedirectLogin} getMaxSeq={getMaxSeq} aaa={aaa} isLogined={isLogined} />
+            <div className={isLogined?styles.comments_create:styles.hidden}>
+                <textarea ref={comment_input} className={styles.comment_create_input} placeholder="댓글을 입력하세요. &#13;&#10;shift+enter로 줄바꿈 가능합니다."></textarea> 
                 <button onClick={()=>{
                     createComments()
                 }} className={styles.comment_create_button}>등록</button>
             </div>
-            
-            <Comments no={no} setIsRedirectLogin={setIsRedirectLogin} getMaxSeq={getMaxSeq} aaa={aaa} />
             {isRedirectHome&&<Navigate to="/"/>}
             {isRedirectLogin&&<Navigate to="/login"/>}
         </div>}

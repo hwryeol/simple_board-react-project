@@ -2,7 +2,7 @@ import styles from "./Comments.module.css";
 import {Link} from "react-router-dom";
 import { useEffect,useRef, useState } from "react";
 
-function Comments({no,setIsRedirectLogin,getMaxSeq,aaa}){
+function Comments({no,setIsRedirectLogin,getMaxSeq,aaa,isLogined}){
     const [isReplyList,setIsReplyList] = useState([]);
     const [comments,setComments] = useState([]);
     const reply_inputList = useRef([]);
@@ -57,7 +57,6 @@ function Comments({no,setIsRedirectLogin,getMaxSeq,aaa}){
 
     return <>{comments.map((data,index)=>{
         return <><div key={`commentsList${index}`} className={data.lvl>0?styles.reply:styles.comments} style={{left:`${(data.lvl)*20}px`}}>
-            <div style={{display:"flex"}}>
                 <div className={styles.comments_nickname}>{data.nickname}</div>
                 <div className={styles.comments_contents} onClick={()=>{
                     const newReplyList = isReplyList.map((data,idx)=>{
@@ -68,13 +67,11 @@ function Comments({no,setIsRedirectLogin,getMaxSeq,aaa}){
                     setIsReplyList(newReplyList)
                 }}>{data.contents}</div>
                 <div className={styles.comments_create_at}>{data.create_at.replace(/T|Z/g,' ').slice(5,19)}</div>
-                <button className={styles.comments_delete_button} onClick={(event)=>{
+                <button className={isLogined?styles.comments_delete_button:styles.hidden} onClick={(event)=>{
                     deleteComments(index);
                 }}>X</button>
-            </div>
-            
         </div>
-        <div className={isReplyList[index]?styles.reply_form:[styles.reply_form,styles.hidden].join(" ")}>
+        <div className={isReplyList[index]?[styles.reply_form,styles.col].join(" "):[styles.reply_form,styles.hidden].join(" ")}>
         <textarea placeholder="답글을 입력하세요" ref={el=>reply_inputList.current[index] = el} type="text" className={styles.reply_input}></textarea>
         <button className={styles.reply_input_button} onClick={(event)=>{
             createReply(reply_inputList.current[index],data.seq,data.lvl+1);

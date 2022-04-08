@@ -4,7 +4,7 @@ import styles from "./Home.module.css";
 import {VscChevronLeft,VscChevronRight } from "react-icons/vsc";
 
 
-function Home({isLogined, isLoding, setIsLoading}) {
+function Home({isLogined, isLoding, setIsLoading,getUserData}) {
   const [forumList,setForumList] = useState([]);
   const [userData,setUserData] = useState([]);
   const [forumsCount,setForumsCount] = useState(0);
@@ -34,6 +34,7 @@ function Home({isLogined, isLoding, setIsLoading}) {
   }
   useEffect(()=>{
     getForumList();
+    getUserData();
   },[currentPage]);
 
   const pagenation = () => {
@@ -90,7 +91,7 @@ function Home({isLogined, isLoding, setIsLoading}) {
             })}
           </tbody>
           </table>
-          <Link to="./postcreate">생성</Link>
+          <Link className={isLogined?"":styles.hidden} to="./postcreate">생성</Link>
           <div className={styles.container}>
             {currentPageList>1?<VscChevronLeft onClick={downPageList} className={styles.left_icon}/>:null}
             {pagenation()}

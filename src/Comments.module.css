@@ -1,65 +1,68 @@
 .comments{
     position: relative;
-    display: inline-block;
-    width:1160px;
+    display: flex;
     background-color: #ffffff;
     font-size:13px;
     padding:9px 6px 7px;
     border-collapse : collapse;
     margin-top:-1px;
-    border:1px solid;
+    border:1px solid #ddd;
 }
 .comments_contents{
     position:relative;
     cursor: pointer;
-    width:820px;
+    width:80%;
     left:100px;
 }
 .reply{
     position: relative;
-    width:1160px;
+    display: flex;
     padding:9px 6px 7px;
     font-size:13px;
     background-color: #ddd;
     margin-top:-1px;
-    border:1px solid;
+    border:1px solid #ccc;
 }
-.hidden{
-    display:none;
-}
+
 .reply_input{
     height: 65px;
-    width:90%;
     resize:none;
 }
 .reply_input_button{
     position:relative;
-    background-color: skyblue;
-    top:-30px;
-    left:10px;
-    border: 0px;
-    height: 70px;
-    width:80px;
-    cursor:pointer;
+    color: #444444;
+    background: #F3F3F3;
+    border: 1px #DADADA solid;
+    padding: 5px 10px;
+    border-radius: 2px;
+    font-weight: bold;
+    font-size: 9pt;
+    outline: none;
+    right:0%;
+    height:fit-content;
+    width: fit-content;
 }
 .reply_form{
     position:relative;
+    display: flex;
+    flex-direction: column;
     background-color: #ddd;
-    border:1px solid;
+    border:1px solid #ccc;
     height:80px;
-    padding:20px;
+    padding:9px 6px 7px;
     z-index:99;
+    margin-top:-1px;
 }
 .comments_nickname{
     position:relative;
-    width:100px;
+    width:fit-content;
     text-align: left;
 }
 .comments_create_at{
     position: relative;
     display:block;
-    left:140px;
     text-align: right;
+    margin-right: 8px;
 }
 .comments_create{
     position:relative;
@@ -67,7 +70,6 @@
     background-color: #ddd;
     top:0;
     width:500px;
-    margin-bottom: 20px;
 }
 .comment_create_input{
     position: relative;
@@ -78,6 +80,7 @@
 .comment_create_button{
     position:relative;
     background-color: skyblue;
+    margin-top: 4px;
     border: 0px;
     height: 60px;
     width:180px;
@@ -86,4 +89,7 @@
 .comments_delete_button{
     position:relative;
     display: inline;
+}
+.hidden{
+    display:none;
 }

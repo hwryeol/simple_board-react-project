@@ -1,10 +1,12 @@
+
+
 .header{
     position: relative;
     display:flex;
-    left:330px;
+    left:350px;
     justify-content:space-between;
     height:120px;
-    width:calc(100% - 660px)
+    width:calc(100% - 700px)
 }
 
 .header_bar{
@@ -15,19 +17,34 @@
     margin-bottom: 18px;
 
 }
-.header_links{
+.header_login_links{
     position: relative;
     display: flex;
-    background-color: gray;
-    border-radius: 30px;
+    width:100px;
+    border: 1px solid #ddd;
+    background-color: white;
+    border-radius: 10px;
     right:30px;
     top:50px;
+    overflow:hidden;
     z-index: 100;
+    animation-duration: 0.5s;
+    animation-name: dropdown;
+}
+.header_login_links>*{
+    width:fit-content;
+    margin: 0 auto;
+}
+.header_logout_links{
+    display: flex;
+    position: relative;
+    right:0%;
+    top:20px;
 }
 .col{
     flex-direction: column;
 }
-.header_links>*{
+.header_logout_links>*{
     margin-left: 10px;
 }
 .header_title{
@@ -37,10 +54,74 @@
     font-size:32px;
     margin:0px;
 }
+.message{
+    border-bottom: #ddd;
+    margin-bottom: 5px;
+}
 .userDropMenuBtn{
     position:absolute;
-    left:95%;
+    cursor:pointer;
+    width:32px;
+    height: 32px;
+    right:0%;
+    top:32px;
 }
+button{
+    color: #444444;
+    background: #F3F3F3;
+    border: 1px #DADADA solid;
+    padding: 5px 10px;
+    border-radius: 2px;
+    font-weight: bold;
+    font-size: 9pt;
+    outline: none;
+    cursor:pointer;
+}
+button:hover{
+    border: 1px #C6C6C6 solid;
+    box-shadow: 1px 1px 1px #EAEAEA;
+    color: #333333;
+    background: #F7F7F7;
+}
+button:active{
+    box-shadow: inset 1px 1px 1px #DFDFDF;   
+}
+.logout_Btn{
+    width:fit-content;
+}
+.signupBtn, .loginBtn{
+    color: #444444;
+    background: #F3F3F3;
+    border: 1px #DADADA solid;
+    padding: 5px 10px;
+    border-radius: 2px;
+    font-weight: bold;
+    font-size: 9pt;
+    outline: none;
+    cursor:pointer;
+    height:fit-content;
+    text-decoration: none;
+}
+.signupBtn:hover, .loginBtn:hover{
+    border: 1px #C6C6C6 solid;
+    box-shadow: 1px 1px 1px #EAEAEA;
+    color: #333333;
+    background: #F7F7F7;
+}
+.signupBtn:active, .loginBtn:active{
+    box-shadow: inset 1px 1px 1px #DFDFDF;   
+}
+
+
 .hidden{
     display: none;
+}
+
+@keyframes dropdown{
+    from{
+        height: 0px;
+    }
+    to{
+        height: 120px;
+    }
 }

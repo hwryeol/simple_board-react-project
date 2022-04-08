@@ -156,3 +156,6 @@
 .boards_content_List_header_viewCount::after{
     display: none;
 }
+.hidden{
+    display: none;
+}

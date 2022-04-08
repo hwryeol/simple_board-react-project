@@ -13,24 +13,31 @@ function CreatePost({isLogined}){
     const [isRedirectPost,setIsRedirectPost] = useState(false);
     
     function sendPost(){
-        fetch(`/forums`,{
-            method:"POST",
-            headers:{
-                "Content-Type": "application/json"
-              },
-            body:JSON.stringify({
-                title:titleRef.current.value,
-                contents:contents
+        if(!titleRef.current.value){
+            alert("타이틀을 입력하세요")
+        }else if(!contents){
+            alert("내용을 입력하세요")
+        }else{
+            fetch(`/forums`,{
+                method:"POST",
+                headers:{
+                    "Content-Type": "application/json"
+                  },
+                body:JSON.stringify({
+                    title:titleRef.current.value,
+                    contents:contents
+                })
+            }).then(res=>{
+                if(res.status === 401){
+                    alert("로그인이 필요합니다")
+                }
+                res.json().then(data=>{
+                    setInsertID(data.insertId);
+                    setIsRedirectPost(prev => !prev);
+                })
             })
-        }).then(res=>{
-            if(res.status === 401){
-                alert("로그인이 필요합니다")
-            }
-            res.json().then(data=>{
-                setInsertID(data.insertId);
-                setIsRedirectPost(prev => !prev);
-            })
-        })
+        }
+       
     }
     return <div className={styles.createPost}>
         <input className={styles.title} placeholder="제목을 입력하세요" ref={titleRef}></input>

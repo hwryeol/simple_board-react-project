@@ -9,6 +9,10 @@ function Login({setIsLogined,getUserData}) {
   const [isRedirect,setIsRedirect] = useState(false);
   const [userData,setUserData] = useState([]);
 
+  useState(()=>{
+    getUserData();
+  },[])
+
   function onClickSubmit(event){
     event.preventDefault();
     fetch(`/login`,{

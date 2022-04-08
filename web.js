@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app=express();
-const port=3001;
+const port=80;
 const uuid = require('uuid')
 const multer = require('multer')
 const session = require('express-session');
@@ -23,7 +23,6 @@ const storage = multer.diskStorage({
     destination: (req,file,cb)=>{
         const urlSplit = req.url.split('/');
         const no = urlSplit[urlSplit.length - 1];
-        console.log(no)
         const dir = `./upload/${no}`
         if(!fs.existsSync(dir)){
             fs.mkdirSync(dir);
@@ -31,17 +30,16 @@ const storage = multer.diskStorage({
         cb(null,dir)
     },
     filename: (req,file,cb)=>{
-        console.log()
         cb(null, file.originalname)
     }
 })
 const upload = multer({dest: `upload/`, storage:storage})
 
 const options = {
-    host:'localhost',
-    user:'root',
+    host:process.env.SQL_HOST,
+    user:process.env.SQL_USER,
     password:process.env.SQL_PASSWORD,
-    database:'simpleforum',
+    database:process.env.SQL_DATABASE,
     multipleStatements:true
 };
 const corsOptions={
@@ -114,7 +112,6 @@ app.post('/signup',async (req,res)=>{
 
 app.post('/login',(req,res)=>{
     const post = req.body;
-    console.log(post);
     db.query('select * from users where id=? and password=SHA2(?,256)',
     [post.id, post.password],(err,result)=>{
         if(err) throw err;
@@ -201,9 +198,7 @@ app.post('/comments/:no',(req,res)=>{
     if(!req.session.isLogined)res.status(401).end();
     else{
     const post = req.body;
-    console.log(post.contents)
     if(post.contents){
-        console.log(post.contents)
         const queryString = `
         INSERT INTO comments(
             post_no,
@@ -246,7 +241,6 @@ app.delete('/comments/:no',(req,res)=>{
 
 app.post('/upload/:no',upload.array('files'),(req,res)=>{
     res.send('upload');
-    console.log(req.files);
 })
 
 
