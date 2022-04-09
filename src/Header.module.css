@@ -8,6 +8,7 @@
     height:120px;
     width:calc(100% - 700px)
 }
+
 .header_bar{
     position: relative;
     background-color: #3b4890;
@@ -16,7 +17,6 @@
     margin-bottom: 18px;
 
 }
-<<<<<<< HEAD
 .header_login_links{
     position: relative;
     display: flex;
@@ -40,10 +40,6 @@
     position: relative;
     right:0%;
     top:20px;
-=======
-.header_links{
-    display: flex;
->>>>>>> parent of f601803 (feat: 사용자 정보를 버튼상태에 따라 보이는 기능추가)
 }
 .col{
     flex-direction: column;
@@ -57,7 +53,6 @@
     top:30%;
     font-size:32px;
     margin:0px;
-<<<<<<< HEAD
 }
 .message{
     border-bottom: #ddd;
@@ -129,6 +124,4 @@ button:active{
     to{
         height: 120px;
     }
-=======
->>>>>>> parent of f601803 (feat: 사용자 정보를 버튼상태에 따라 보이는 기능추가)
 }
