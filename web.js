@@ -5,7 +5,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const app=express();
-const port=80;
+const port=8001;
 const uuid = require('uuid')
 const multer = require('multer')
 const session = require('express-session');
@@ -58,10 +58,11 @@ const sessionOption = {
 
 
 const db = mysql.createConnection(options);
+const dirname = "/home/hosting_users/hwryeol/apps/hwryeol_simpleforum/"
 
 app.use(session(sessionOption));
 app.use(cors(corsOptions));
-app.use('/',express.static(path.join(__dirname,'build')))
+app.use('/',express.static(path.join(dirname,'build')))
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use('/ckfinder',proxy('http://localhost:3002',{
@@ -99,7 +100,7 @@ app.post('/signup',async (req,res)=>{
     db.query('select id from users where id=?',id,(err,result)=>{
         if(err) throw err;
         if(result[0]===undefined){
-            db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,SHA2(?,256),?)'
+            db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,SHA(?,256),?)'
             ,[id,nickname,password,uuid.v1()],(err,result)=> {if(err) throw err})
             res.status(200).end();
         }else{
@@ -112,7 +113,7 @@ app.post('/signup',async (req,res)=>{
 
 app.post('/login',(req,res)=>{
     const post = req.body;
-    db.query('select * from users where id=? and password=SHA2(?,256)',
+    db.query('select * from users where id=? and password=SHA(?,256)',
     [post.id, post.password],(err,result)=>{
         if(err) throw err;
         if(result[0]!==undefined){
@@ -320,7 +321,7 @@ const googleCredentials = {
         "client_id": process.env.CLIENT_ID,
         "client_secret": process.env.CLIENT_SECRET,
         "redirect_uris": [
-            "http://localhost:3001/auth/google/callback"
+            "http://localhost:8001/auth/google/callback"
         ]
     }
 }
@@ -345,7 +346,7 @@ passport.use(new GoogleStrategy({
             profile.emails[0].value
         ],(err,result)=>{
             if(result[0] === undefined){
-                db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,SHA2(?,256),?)',[
+                db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,SHA(?,256),?)',[
                     profile.emails[0].value,
                     profile.displayName,
                     uuid.v1(),
