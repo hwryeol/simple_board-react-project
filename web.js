@@ -4,7 +4,7 @@ const mysql = require('mysql2');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const app=express();
+const app = express();
 const port=8001;
 const uuid = require('uuid')
 const multer = require('multer')
@@ -16,9 +16,20 @@ const proxy = require('express-http-proxy');
 const passport = require('passport')
 ,GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
-require('dotenv').config();
+const fs = require("fs");
 
-const fs =require('fs')
+const privateKey = fs.readFileSync("crypt/private.key", "utf8");
+const certificate = fs.readFileSync("crypt/certificate.crt", "utf8")
+const ca = fs.readFileSync("crypt/ca_bundle.crt", "utf8")
+
+const credentials = {
+    key: privateKey,
+    cert: certificate,
+    ca: ca
+};
+
+
+require('dotenv').config();
 const storage = multer.diskStorage({
     destination: (req,file,cb)=>{
         const urlSplit = req.url.split('/');
@@ -65,14 +76,7 @@ app.use(cors(corsOptions));
 app.use('/',express.static(path.join(dirname,'build')))
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(bodyParser.json());
-app.use('/ckfinder',proxy('http://localhost:3002',{
-    proxyReqPathResolver: function (req) {
-        var parts = req.url.split('?');
-        var queryString = parts[1];
-        var updatedPath = parts[0].replace(/test/, 'tent');
-        return '/ckfinder'+ updatedPath + (queryString ? '?' + queryString : '');
-      }
-}))
+
 
 
 
@@ -89,18 +93,12 @@ async function getUserData(uuid){
     return result; 
 }
 
-
-app.listen(port,()=>{
-    console.log("server is running");
-})
-
-
 app.post('/signup',async (req,res)=>{
     const {id,nickname,password} = req.body;
     db.query('select id from users where id=?',id,(err,result)=>{
         if(err) throw err;
         if(result[0]===undefined){
-            db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,SHA(?,256),?)'
+            db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,SHA(?),?)'
             ,[id,nickname,password,uuid.v1()],(err,result)=> {if(err) throw err})
             res.status(200).end();
         }else{
@@ -321,7 +319,7 @@ const googleCredentials = {
         "client_id": process.env.CLIENT_ID,
         "client_secret": process.env.CLIENT_SECRET,
         "redirect_uris": [
-            "http://localhost:8001/auth/google/callback"
+            "http://localhost/auth/google/callback"
         ]
     }
 }
@@ -346,7 +344,7 @@ passport.use(new GoogleStrategy({
             profile.emails[0].value
         ],(err,result)=>{
             if(result[0] === undefined){
-                db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,SHA(?,256),?)',[
+                db.query('INSERT INTO users(id,nickname,password,uuid) values(?,?,SHA(?),?)',[
                     profile.emails[0].value,
                     profile.displayName,
                     uuid.v1(),
@@ -377,3 +375,8 @@ app.get('/auth/google/callback',
     })
 
   });
+
+    const httpsServer = require('https').createServer(credentials,app);
+    httpsServer.listen(port,()=>{
+    console.log("server is running");
+    })

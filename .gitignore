@@ -4,6 +4,7 @@
 /.pnp
 .pnp.js
 .env
+./crypt
 
 # testing
 /coverage
