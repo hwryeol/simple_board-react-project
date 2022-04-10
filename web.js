@@ -18,17 +18,6 @@ const passport = require('passport')
 
 const fs = require("fs");
 
-const privateKey = fs.readFileSync("crypt/private.key", "utf8");
-const certificate = fs.readFileSync("crypt/certificate.crt", "utf8")
-const ca = fs.readFileSync("crypt/ca_bundle.crt", "utf8")
-
-const credentials = {
-    key: privateKey,
-    cert: certificate,
-    ca: ca
-};
-
-
 require('dotenv').config();
 const storage = multer.diskStorage({
     destination: (req,file,cb)=>{
@@ -69,7 +58,7 @@ const sessionOption = {
 
 
 const db = mysql.createConnection(options);
-const dirname = "/home/hosting_users/hwryeol/apps/hwryeol_simpleforum/"
+const dirname = __dirname
 
 app.use(session(sessionOption));
 app.use(cors(corsOptions));
@@ -376,7 +365,6 @@ app.get('/auth/google/callback',
 
   });
 
-    const httpsServer = require('https').createServer(credentials,app);
-    httpsServer.listen(port,()=>{
-    console.log("server is running");
-    })
+app.listen(port,(req,res)=>{
+    console.log("sever is listen")
+})
