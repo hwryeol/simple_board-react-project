@@ -100,7 +100,7 @@ app.post('/signup',async (req,res)=>{
 
 app.post('/login',(req,res)=>{
     const post = req.body;
-    db.query('select * from users where id=? and password=SHA(?,256)',
+    db.query('select * from users where id=? and password=SHA(?)',
     [post.id, post.password],(err,result)=>{
         if(err) throw err;
         if(result[0]!==undefined){
