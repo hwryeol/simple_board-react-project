@@ -19,21 +19,6 @@ const passport = require('passport')
 const fs = require("fs");
 
 require('dotenv').config();
-const storage = multer.diskStorage({
-    destination: (req,file,cb)=>{
-        const urlSplit = req.url.split('/');
-        const no = urlSplit[urlSplit.length - 1];
-        const dir = `./upload/${no}`
-        if(!fs.existsSync(dir)){
-            fs.mkdirSync(dir);
-        }
-        cb(null,dir)
-    },
-    filename: (req,file,cb)=>{
-        cb(null, file.originalname)
-    }
-})
-const upload = multer({dest: `upload/`, storage:storage})
 
 const options = {
     host:process.env.SQL_HOST,
@@ -82,6 +67,33 @@ async function getUserData(uuid){
     return result; 
 }
 
+const storage = multer.diskStorage({
+    destination: (req,file,cb)=>{
+        cb(null,'images/')
+    },
+    filename: (req,file,cb)=>{
+        cb(null, `${uuid.v1().slice(0,8)}_${file.originalname}`);
+    }
+})
+
+
+
+const upload = multer({dest: `images/`, storage:storage})
+app.get('/images/:name',(req,res)=>{
+    const filename = req.params.name;
+    const stream = fs.createReadStream(`images/${filename}`)
+    res.setHeader('Content-Disposition', `attachment; filename=${filename}`)
+    stream.pipe(res)
+
+})
+
+
+app.post('/images',upload.single('upload'),(req,res)=>{
+    if(!req.session.isLogined)res.status(401).end();
+    res.json({
+        "url":`http://localhost:8001/images/${req.file.filename}`
+    })
+})
 app.post('/signup',async (req,res)=>{
     const {id,nickname,password} = req.body;
     db.query('select id from users where id=?',id,(err,result)=>{

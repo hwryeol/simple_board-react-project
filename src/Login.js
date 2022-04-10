@@ -1,5 +1,5 @@
 import {Link,Navigate} from "react-router-dom"
-import {useState} from "react"
+import {useState,useEffect} from "react"
 import styles from "./Login.module.css";
 import sha256 from "sha256";
 import googleLoginBtn from "./asset/googleLogin.png"
@@ -9,7 +9,7 @@ function Login({setIsLogined,getUserData}) {
   const [isRedirect,setIsRedirect] = useState(false);
   const [userData,setUserData] = useState([]);
 
-  useState(()=>{
+  useEffect(()=>{
     getUserData();
   },[])
 

@@ -1,6 +1,6 @@
 .createPost{
     position: relative;
-    left:350px;
+    left:20rem;
     width:calc(100% - 700px);
 }
 .title{

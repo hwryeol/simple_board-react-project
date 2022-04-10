@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    left:350px;
+    left:20rem;
     width:calc(100% - 700px);
 }
 .signup > *{
